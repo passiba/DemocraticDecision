@@ -12,9 +12,9 @@
 
     <ImageView
         android:id="@+id/icon"
-        android:contentDescription="@string/desc_firebase_lockup"
+        android:contentDescription="@string/desc_crackeu_lockup"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/firebase_lockup_400"
+        android:src="@drawable/crackeu_lockup_400"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="32dp"
-        android:text="@string/firebase_user_management" />
+        android:text="@string/user_management" />
 
     <TextView
         android:id="@+id/text_sign_in_status"

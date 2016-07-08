@@ -2,18 +2,18 @@
     <string name="app_name">DemocraticDecision</string>
 
 
-    <string name="label_google_sign_in">Firebase + Google Sign In</string>
-    <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate with Firebase.</string>
+    <string name="label_google_sign_in"> Google Sign In</string>
+    <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate.</string>
 
 
     <string name="label_emailpassword">Email/Password Authentication</string>
-    <string name="desc_emailpassword">Use an email and password to authenticate with Firebase.</string>
+    <string name="desc_emailpassword">Use an email and password to authenticate .</string>
 
     <string name="label_anonymous_auth">Anonymous Authentication</string>
-    <string name="desc_anonymous_auth">Sign in anonymously and then later upgrade to a full Firebase Auth user..</string>
+    <string name="desc_anonymous_auth">Sign in anonymously and then later upgrade to a full Auth user..</string>
 
     <string name="label_custom_auth">Custom Authentication</string>
-    <string name="desc_custom_auth">Use a custom token signed by your own server to authenticate with Firebase.</string>
+    <string name="desc_custom_auth">Use a custom token signed by your own server to authenticate .</string>
 
     <string name="hint_user_id">User ID</string>
     <string name="get_custom_token">Get Token</string>
@@ -27,10 +27,10 @@
     <string name="token_null">Token: null</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
-    <string name="desc_firebase_lockup">Firebase logo and name</string>
+    <string name="desc_crackeu_lockup">Crack eu logo and name</string>
 
-    <string name="firebase_status_fmt">Firebase User: %s</string>
-    <string name="firebase_user_management">Firebase User Management</string>
+    <string name="user_status_fmt">User: %s</string>
+    <string name="user_management">User Management</string>
 
     <string name="google_status_fmt">Google User: %s</string>
     <string name="google_title_text">Google Sign In</string>

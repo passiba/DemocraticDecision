@@ -17,8 +17,8 @@
         <ImageView
             style="@style/ThemeOverlay.FirebaseIcon"
             android:id="@+id/google_icon"
-            android:contentDescription="@string/desc_firebase_lockup"
-            android:src="@drawable/firebase_lockup_400"
+            android:contentDescription="@string/desc_crackeu_lockup"
+            android:src="@drawable/crackeu_lockup_400"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
