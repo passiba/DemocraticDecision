@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.crackeu.democraticdecision;
+package org.crackeu.democraticdecision.auth;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +30,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.crackeu.democraticdecision.BaseActivity;
+import org.crackeu.democraticdecision.R;
 
 public class EmailPasswordActivity extends BaseActivity implements
         View.OnClickListener {

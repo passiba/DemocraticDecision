@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.crackeu.democraticdecision;
+package org.crackeu.democraticdecision.auth;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

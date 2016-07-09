@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "824886430065",
+    "firebase_url": "https://democraticvote-ae4bb.firebaseio.com",
+    "project_id": "democraticvote-ae4bb",
+    "storage_bucket": "democraticvote-ae4bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824886430065:android:1877b84b3d16fc7a",
+        "android_client_info": {
+          "package_name": "org.crackeu.democraticdecision"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824886430065-ka048adgedujrmro2de1jts6btij4ba4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe5m8aF2c8Q8x0rXQYpHvjx6uTL-nDVS0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

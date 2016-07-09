@@ -1,4 +1,4 @@
-package org.crackeu.democraticdecision;
+package org.crackeu.democraticdecision.auth;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import org.crackeu.democraticdecision.R;
 
 
 /**

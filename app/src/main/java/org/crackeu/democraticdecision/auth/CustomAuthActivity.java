@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.crackeu.democraticdecision;
+package org.crackeu.democraticdecision.auth;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +28,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.crackeu.democraticdecision.R;
 
 /**
  * Demonstrate Firebase Authentication using a custom minted token. For more information, see:
