@@ -14,6 +14,7 @@
 
     <string name="label_custom_auth">Custom Authentication</string>
     <string name="desc_custom_auth">Use a custom token signed by your own server to authenticate .</string>
+    <string name="desc_cast_your_vote">Use your democratic right to make you voice heard, Cast your vote in eu referendum in your counrty</string>
 
     <string name="hint_user_id">User ID</string>
     <string name="get_custom_token">Get Token</string>
@@ -41,4 +42,11 @@
 
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
+    <string name="eureferendum">Should your country of residence held a democratic eu referendum ?</string>
+    <string name="eu_referendumvote_yes">Yes</string>
+    <string name="eu_referendumvote_no">No</string>
+    <string name="eureferendum_suggestion">Suggest voting on urgent issue demanding national decision making</string>
+    <string name="button_eu_vote">Send Vote</string>
+    <string name="button_vote_suggestion">Send Suggestion</string>
+    <string name="eu_country">Your EU country</string>
 </resources>

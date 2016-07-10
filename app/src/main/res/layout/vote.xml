@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/votes_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
+
+    <FrameLayout
+        android:id="@+id/left_arrow"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="2dp"
+        android:background="@drawable/vote_message_arrow"
+        android:rotation="180" />
+
+
+    <LinearLayout
+        android:id="@+id/vote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="26dp"
+        android:layout_marginRight="26dp"
+        android:background="@drawable/vote_message_background"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:id="@+id/vote_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            tools:text="Hey this is a message, look!" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            android:id="@+id/vote_username_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Some User" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            android:id="@+id/vote_usercountry_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Some Eu Country" />
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/right_arrow"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignEnd="@+id/vote"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/vote"
+        android:layout_marginRight="-25dp"
+        android:background="@drawable/vote_message_arrow"
+        android:rotation="180" />
+
+</RelativeLayout>

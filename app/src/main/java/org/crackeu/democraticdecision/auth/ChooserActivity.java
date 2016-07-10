@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.crackeu.democraticdecision.R;
+import org.crackeu.democraticdecision.vote.VoteActivity;
 
 
 /**
@@ -23,6 +24,7 @@ import org.crackeu.democraticdecision.R;
  * {@link EmailPasswordActivity}
  * {@link AnonymousAuthActivity}
  * {@link CustomAuthActivity}
+ * {@link VoteActivity}
  **/
 
 public class ChooserActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -32,7 +34,8 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             GoogleSignInActivity.class,
             EmailPasswordActivity.class,
             AnonymousAuthActivity.class,
-            CustomAuthActivity.class
+            CustomAuthActivity.class,
+            VoteActivity.class
     };
 
     private static final int[] DESCRIPTION_IDS = new int[]{
@@ -40,6 +43,9 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             R.string.desc_emailpassword,
             R.string.desc_anonymous_auth,
             R.string.desc_custom_auth,
+            R.string.desc_cast_your_vote
+
+
     };
 
     @Override
@@ -50,6 +56,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
 
         // Set up ListView and Adapter
         ListView listView = (ListView) findViewById(R.id.list_view);
+
 
         MyArrayAdapter adapter = new MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES);
         adapter.setDescriptionIds(DESCRIPTION_IDS);

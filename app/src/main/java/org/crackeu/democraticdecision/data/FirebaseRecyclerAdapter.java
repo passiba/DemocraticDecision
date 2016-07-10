@@ -123,6 +123,7 @@ public abstract class FirebaseRecyclerAdapter<T, VH extends RecyclerView.ViewHol
         this(modelClass, modelLayout, viewHolderClass, (Query) ref);
     }
 
+
     public void cleanup() {
         mSnapshots.cleanup();
     }
