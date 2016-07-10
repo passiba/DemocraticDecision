@@ -59,7 +59,9 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="61dp"
-        android:id="@+id/listEuCountries" />
+        android:id="@+id/listEuCountries"
+        style="@style/Base.Widget.AppCompat.ListView"
+        android:background="@color/colorPrimary" />
 
 
     <Button
@@ -80,7 +82,9 @@
         android:layout_alignParentTop="true"
         android:clipToPadding="false"
         android:padding="16dp"
-        tools:listitem="@layout/vote" />
+        tools:listitem="@layout/vote"
+        style="@style/Widget.AppCompat.ListView"
+        android:background="@color/highlighted_text_material_dark" />
 
 
 </LinearLayout>
