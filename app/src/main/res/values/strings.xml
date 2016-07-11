@@ -15,6 +15,8 @@
     <string name="label_custom_auth">Custom Authentication</string>
     <string name="desc_custom_auth">Use a custom token signed by your own server to authenticate .</string>
     <string name="desc_cast_your_vote">Use your democratic right to make you voice heard, Cast your vote in eu referendum in your counrty</string>
+    <string name="desc_vote_char">Demonstrates the graphical chart of the data</string>
+
 
     <string name="hint_user_id">User ID</string>
     <string name="get_custom_token">Get Token</string>
@@ -49,4 +51,7 @@
     <string name="button_eu_vote">Send Vote</string>
     <string name="button_vote_suggestion">Send Suggestion</string>
     <string name="eu_country">Your EU country</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

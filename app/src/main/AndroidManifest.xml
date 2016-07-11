@@ -32,6 +32,7 @@
             android:label="@string/label_anonymous_auth" />
         <activity android:name=".vote.VoteActivity" />
         <activity android:name=".vote.VoteSuggestionActivity" />
+        <activity android:name=".chart.PiePolylineChartVoteActivity"></activity>
     </application>
 
 </manifest>

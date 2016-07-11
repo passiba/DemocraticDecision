@@ -10,6 +10,11 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        sourceSets {
+            main {
+                assets.srcDirs = ['assets']
+            }
+        }
     }
     buildTypes {
         release {
@@ -22,16 +27,18 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.0.0'
     // Firebase Authentication
-    compile 'com.google.firebase:firebase-auth:9.2.0'
 
     // Google Sign In SDK (only required for Google Sign In)
-    compile 'com.google.android.gms:play-services-auth:9.2.0'
 
     //firebase Firebaseui depencencies
-    compile "com.android.support:recyclerview-v7:24.0.0"
-    compile "com.google.firebase:firebase-database:9.2.0"
 
+    compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'com.google.firebase:firebase-auth:9.2.0'
+    compile 'com.google.android.gms:play-services-auth:9.2.0'
+    compile 'com.android.support:recyclerview-v7:24.0.0'
+    compile 'com.google.firebase:firebase-database:9.2.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
+    compile 'com.android.support:support-v4:24.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

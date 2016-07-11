@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.crackeu.democraticdecision.R;
+import org.crackeu.democraticdecision.chart.PiePolylineChartVoteActivity;
 import org.crackeu.democraticdecision.vote.VoteActivity;
 
 
@@ -35,7 +36,8 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             EmailPasswordActivity.class,
             AnonymousAuthActivity.class,
             CustomAuthActivity.class,
-            VoteActivity.class
+            VoteActivity.class,
+            PiePolylineChartVoteActivity.class
     };
 
     private static final int[] DESCRIPTION_IDS = new int[]{
@@ -43,7 +45,8 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             R.string.desc_emailpassword,
             R.string.desc_anonymous_auth,
             R.string.desc_custom_auth,
-            R.string.desc_cast_your_vote
+            R.string.desc_cast_your_vote,
+            R.string.desc_vote_char
 
 
     };

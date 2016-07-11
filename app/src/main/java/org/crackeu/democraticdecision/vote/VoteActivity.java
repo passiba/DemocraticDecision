@@ -2,7 +2,6 @@ package org.crackeu.democraticdecision.vote;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,22 +20,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import org.crackeu.democraticdecision.R;
 import org.crackeu.democraticdecision.data.FirebaseRecyclerAdapter;
 
-import java.util.ArrayList;
-
-public class VoteActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "VoteActivity";
 
 
-    ArrayList<String> euCountries = new ArrayList<>();
-
-    private DatabaseReference mRef;
-    private DatabaseReference mVoteRef;
 
     private FirebaseAuth mAuth;
     private Button mSendButton;
@@ -45,10 +37,12 @@ public class VoteActivity extends AppCompatActivity implements AdapterView.OnIte
     protected RadioButton mVoteNoRadioButton;
 
     private boolean leaveEu;
-    String selectedEuCountry = "Finland";
+    String selectedEuCountry;
     private RecyclerView mVotes;
     private LinearLayoutManager mManager;
+
     private FirebaseRecyclerAdapter<Vote, VoteHolder> mRecyclerViewAdapter;
+
 
 
     @Override
@@ -56,13 +50,14 @@ public class VoteActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vote);
 
-        initializeEUCountries();
+        super.initializeEUCountries();
         // Set up ListView and Adapter
         ListView listView = (ListView) findViewById(R.id.listEuCountries);
         ArrayAdapter<String> adaptercountries = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, euCountries);
         listView.setAdapter(adaptercountries);
         listView.setOnItemClickListener(this);
-
+        listView.setOnItemSelectedListener(this);
+        listView.setOnItemLongClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
         mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
@@ -73,8 +68,7 @@ public class VoteActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
 
-        mRef = FirebaseDatabase.getInstance().getReference();
-        mVoteRef = mRef.child("votes");
+
         mSendButton = (Button) findViewById(R.id.button_send_eu_referendum_button);
 
         mVoteYesRadioButton = (RadioButton) findViewById(R.id.yesradioButton);
@@ -110,6 +104,7 @@ public class VoteActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+
         mVotes = (RecyclerView) findViewById(R.id.voteList);
 
         mManager = new LinearLayoutManager(this);
@@ -127,36 +122,24 @@ public class VoteActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    private void initializeEUCountries() {
-        this.euCountries.add("Austria");
-        this.euCountries.add("Belgium");
-        this.euCountries.add("Bulgaria");
-        this.euCountries.add("Croatia");
-        this.euCountries.add("Cyprus");
-        this.euCountries.add("Czech Republic");
-        this.euCountries.add("Denmark");
-        this.euCountries.add("Estonia");
-        this.euCountries.add("Finland");
-        this.euCountries.add("France");
-        this.euCountries.add("Germany");
-        this.euCountries.add("Greece");
-        this.euCountries.add("Hungary");
-        this.euCountries.add("Ireland");
-        this.euCountries.add("Italy");
-        this.euCountries.add("Latvia");
-        this.euCountries.add("Lithuania");
-        this.euCountries.add("Luxembourg");
-        this.euCountries.add("Malta");
-        this.euCountries.add("Neatherlands");
-        this.euCountries.add("Poland");
-        this.euCountries.add("Portugal");
-        this.euCountries.add("Romania");
-        this.euCountries.add("Slovakia");
-        this.euCountries.add("Slovenia");
-        this.euCountries.add("Spain");
-        this.euCountries.add("Sweden");
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+        selectedEuCountry = euCountries.get(position);
 
     }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+        selectedEuCountry = euCountries.get(position);
+        return true;
+    }
+
 
     @Override
     protected void onStop() {
@@ -212,6 +195,7 @@ public class VoteActivity extends AppCompatActivity implements AdapterView.OnIte
                 });
     }
 
+
     private void attachRecyclerViewAdapter() {
         //Query lastFifty = mVotes.limitToLast(50);
         mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Vote, VoteHolder>(
@@ -240,40 +224,6 @@ public class VoteActivity extends AppCompatActivity implements AdapterView.OnIte
         mVotes.setAdapter(mRecyclerViewAdapter);
 
 
-    }
-
-    public static class Vote {
-
-        String name;
-        boolean isLeaveEu;
-        String uid;
-        String eucountry;
-
-        public Vote() {
-        }
-
-        public Vote(String name, String uid, boolean leave, String country) {
-            this.name = name;
-            this.isLeaveEu = leave;
-            this.uid = uid;
-            this.eucountry = country;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getUid() {
-            return uid;
-        }
-
-        public boolean isLeaveEu() {
-            return isLeaveEu;
-        }
-
-        public String getEucountry() {
-            return eucountry;
-        }
     }
 
     public static class VoteHolder extends RecyclerView.ViewHolder {
@@ -306,4 +256,6 @@ public class VoteActivity extends AppCompatActivity implements AdapterView.OnIte
             country.setText(fieldvotercounrtry);
         }
     }
+
+
 }
