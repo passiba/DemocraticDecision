@@ -72,19 +72,51 @@
         android:layout_gravity="center_horizontal" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/voteList"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chart1"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@string/button_eu_vote" />
+
+
+    <TextView
+        android:id="@+id/tvXMax"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/header"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:clipToPadding="false"
-        android:padding="16dp"
-        tools:listitem="@layout/vote"
-        style="@style/Widget.AppCompat.ListView"
-        android:background="@color/highlighted_text_material_dark" />
+        android:layout_alignBottom="@+id/chart1"
+        android:layout_alignParentRight="true"
+        android:text="500"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="10dp"
+        android:gravity="right"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tvYMax"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/chart1"
+        android:layout_alignParentRight="true"
+        android:text="500"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="10dp"
+        android:gravity="right"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+    <!-- <android.support.v7.widget.RecyclerView
+         android:id="@+id/voteList"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/header"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentStart="true"
+         android:layout_alignParentTop="true"
+         android:clipToPadding="false"
+         android:padding="16dp"
+         tools:listitem="@layout/vote"
+         style="@style/Widget.AppCompat.ListView"
+         android:background="@color/highlighted_text_material_dark" />-->
 
 
 </LinearLayout>

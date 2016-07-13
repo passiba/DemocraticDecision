@@ -17,7 +17,7 @@
 
 
     <LinearLayout
-        android:id="@+id/vote"
+        android:id="@+id/suggestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="26dp"
@@ -28,7 +28,7 @@
 
         <TextView
             style="@style/TextAppearance.AppCompat.Medium"
-            android:id="@+id/vote_text"
+            android:id="@+id/suggestion_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -36,14 +36,14 @@
 
         <TextView
             style="@style/TextAppearance.AppCompat.Small"
-            android:id="@+id/vote_username_text"
+            android:id="@+id/suggester_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Some User" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Small"
-            android:id="@+id/vote_usercountry_text"
+            android:id="@+id/country_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Some Eu Country" />
@@ -55,9 +55,9 @@
         android:id="@+id/right_arrow"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_alignEnd="@+id/vote"
+        android:layout_alignEnd="@+id/suggestion"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/vote"
+        android:layout_alignRight="@+id/suggestion"
         android:layout_marginRight="-25dp"
         android:background="@drawable/vote_message_arrow"
         android:rotation="180" />
