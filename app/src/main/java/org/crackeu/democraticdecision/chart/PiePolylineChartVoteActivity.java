@@ -101,7 +101,7 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements On
         // add a selection listener
         mChart.setOnChartValueSelectedListener(this);
 
-        setData(4, 100);
+        setData(mEuCountries.length, 100);
 
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);
@@ -111,6 +111,7 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements On
         l.setEnabled(false);
     }
 
+    //float range 100
     private void setData(int count, float range) {
 
         float mult = range;
@@ -120,10 +121,12 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements On
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (int i = 0; i < count; i++) {
-            entries.add(new PieEntry((float) (Math.random() * mult) + mult / 5, mParties[i % mParties.length]));
+            //entries.add(new PieEntry((float) (Math.random() * mult) + mult / 5, mParties[i % mParties.length]));
+            entries.add(new PieEntry((float) (Math.random() * mult) + mult / 5, mEuCountries[i % mEuCountries.length]));
+
         }
 
-        PieDataSet dataSet = new PieDataSet(entries, "Election Results");
+        PieDataSet dataSet = new PieDataSet(entries, "Eu Referendum Voting Results");
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
 
@@ -330,7 +333,7 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements On
 
 
 
-    /*public static class PieChartItem extends RecyclerView.ViewHolder {
+    /*public static class PieChartItemData extends RecyclerView.ViewHolder {
 
 
         View mView;
@@ -345,7 +348,7 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements On
 
 
 
-        public PieChartItem(View itemView) {
+        public PieChartItemData(View itemView) {
             super(itemView);
             mView = itemView;
             mTf = Typeface.createFromAsset(c.getAssets(), "OpenSans-Regular.ttf");
@@ -415,7 +418,8 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements On
         }
 
         private static class ViewHolder {
-            PieChart chart;
+        aaleksandra
+            460PieChart chart;
         }
     }*/
 

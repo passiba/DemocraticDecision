@@ -15,6 +15,7 @@ import android.widget.TextView;
 import org.crackeu.democraticdecision.R;
 import org.crackeu.democraticdecision.chart.PiePolylineChartVoteActivity;
 import org.crackeu.democraticdecision.vote.VoteActivity;
+import org.crackeu.democraticdecision.vote.VoteSuggestionActivity;
 
 
 /**
@@ -37,6 +38,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             AnonymousAuthActivity.class,
             CustomAuthActivity.class,
             VoteActivity.class,
+            VoteSuggestionActivity.class,
             PiePolylineChartVoteActivity.class
     };
 
@@ -46,6 +48,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             R.string.desc_anonymous_auth,
             R.string.desc_custom_auth,
             R.string.desc_cast_your_vote,
+            R.string.desc_suggestion_vote,
             R.string.desc_vote_char
 
 
