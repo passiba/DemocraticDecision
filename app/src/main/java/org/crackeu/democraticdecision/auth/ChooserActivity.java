@@ -111,4 +111,5 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             mDescriptionIds = descriptionIds;
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package org.crackeu.democraticdecision.vote;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -10,6 +11,9 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,10 +33,14 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,16 +48,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.crackeu.democraticdecision.R;
+import org.crackeu.democraticdecision.auth.AnonymousAuthActivity;
+import org.crackeu.democraticdecision.auth.CustomAuthActivity;
+import org.crackeu.democraticdecision.auth.EmailPasswordActivity;
+import org.crackeu.democraticdecision.auth.GoogleSignInActivity;
+import org.crackeu.democraticdecision.chart.PiePolylineChartVoteActivity;
 
 import java.util.ArrayList;
 
-public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener, OnChartValueSelectedListener {
+public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener, OnChartValueSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "VoteActivity";
 
 
 
     private FirebaseAuth mAuth;
+    private FirebaseUser mFirebaseUser;
+
+    private GoogleApiClient mGoogleApiClient;
+
     private Button mSendButton;
 
     protected DatabaseReference mRef;
@@ -91,9 +108,18 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
             }
         });
 
+        mFirebaseUser = mAuth.getCurrentUser();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
+                .build();
+
+
         mRef = FirebaseDatabase.getInstance().getReference();
         mVoteRef = mRef;
         mVoteRef.child("votes");
+        mVoteRef.limitToLast(100);
         mVoteRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -537,5 +563,68 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
         }
     }*/
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.sign_out_menu:
+                try {
+                    mAuth.signOut();
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                    //throws IllegalStateexpeption as you are not yet sign in
+                } catch (java.lang.IllegalStateException stateex) {
+                    Log.d(TAG, "Sign out Failed:" + stateex);
+                }
+
+                mFirebaseUser = null;
+                startActivity(new Intent(this, GoogleSignInActivity.class));
+                return true;
+
+            case R.id.sign_in_goolge_credientials_menu:
+                startActivity(new Intent(this, GoogleSignInActivity.class));
+                return true;
+
+            case R.id.sign_in_custom_menu:
+                startActivity(new Intent(this, CustomAuthActivity.class));
+                return true;
+
+            case R.id.sign_in_emailpassword_menu:
+                startActivity(new Intent(this, EmailPasswordActivity.class));
+                return true;
+
+            case R.id.sign_in_anomyous_menu:
+                startActivity(new Intent(this, AnonymousAuthActivity.class));
+                return true;
+
+            case R.id.eu_referendumvote_menu:
+                startActivity(new Intent(this, VoteActivity.class));
+                return true;
+
+
+            case R.id.eu_referendum_stats_menu:
+                startActivity(new Intent(this, PiePolylineChartVoteActivity.class));
+                return true;
+
+            case R.id.eu_vote_suggestion_menu:
+                startActivity(new Intent(this, VoteSuggestionActivity.class));
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
 
 }

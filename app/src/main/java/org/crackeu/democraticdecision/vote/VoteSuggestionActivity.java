@@ -1,9 +1,14 @@
 package org.crackeu.democraticdecision.vote;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,7 +24,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.crackeu.democraticdecision.R;
+import org.crackeu.democraticdecision.auth.AnonymousAuthActivity;
+import org.crackeu.democraticdecision.auth.CustomAuthActivity;
+import org.crackeu.democraticdecision.auth.EmailPasswordActivity;
+import org.crackeu.democraticdecision.auth.GoogleSignInActivity;
+import org.crackeu.democraticdecision.chart.PiePolylineChartVoteActivity;
 import org.crackeu.democraticdecision.data.FirebaseRecyclerAdapter;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener {
 
@@ -35,6 +47,7 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
     String selectedEuCountry;
     private Button mSendButton;
     private EditText mSuggestionVoteEdit;
+    private String mflagPhotoUrl = "https://www.facebook.com/kollikayttaja.jpg";
 
 
     @Override
@@ -54,6 +67,7 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
         mRef = FirebaseDatabase.getInstance().getReference();
 
         mSuggestionRef = mRef.child("suggestions");
+        mSuggestionRef.limitToLast(100);
         mSuggestionRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -93,7 +107,7 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
                 String uid = "pekkatestaaaja";
                 String name = "User " + uid.substring(0, 6);
 
-                VoteSuggestion suggestionvote = new VoteSuggestion(name, uid, mSuggestionVoteEdit.getText().toString(), selectedEuCountry);
+                VoteSuggestion suggestionvote = new VoteSuggestion(name, uid, mSuggestionVoteEdit.getText().toString(), selectedEuCountry, mflagPhotoUrl);
                 mSuggestionRef.push().setValue(suggestionvote, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference reference) {
@@ -164,15 +178,18 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
         String suggestion;
         String uid;
         String eucountry;
+        String countryflagPhotUrl;
+
 
         public VoteSuggestion() {
         }
 
-        public VoteSuggestion(String name, String uid, String suggestion, String country) {
+        public VoteSuggestion(String name, String uid, String suggestion, String country, String flagPhotUrl) {
             this.name = name;
             this.suggestion = suggestion;
             this.uid = uid;
             this.eucountry = country;
+            this.countryflagPhotUrl = flagPhotUrl;
         }
 
         public String getName() {
@@ -190,6 +207,10 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
         public String getEucountry() {
             return eucountry;
         }
+
+        public String getCountryflagPhotUrl() {
+            return countryflagPhotUrl;
+        }
     }
 
     public static class VoteSuggestionHolder extends RecyclerView.ViewHolder {
@@ -200,6 +221,7 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
         TextView fieldsuggester;
 
         TextView fieldcountry;
+        public CircleImageView euflagImageView;
 
 
         public VoteSuggestionHolder(View itemView) {
@@ -208,6 +230,7 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
             fieldsuggestion = (TextView) itemView.findViewById(R.id.suggestion_text);
             fieldsuggester = (TextView) itemView.findViewById(R.id.suggester_text);
             fieldcountry = (TextView) itemView.findViewById(R.id.country_text);
+            euflagImageView = (CircleImageView) itemView.findViewById(R.id.flagImageView);
         }
 
         public void setFieldsuggestion(String suggestion) {
@@ -226,6 +249,9 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
             fieldcounrtry.setText(counrtry);
         }
 
+        public void setEuflagImageView(CircleImageView euflagImageView) {
+            this.euflagImageView = euflagImageView;
+        }
     }
 
     private void attachRecyclerViewAdapter() {
@@ -239,6 +265,16 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
                 view.setFieldcountry(suggestion.getEucountry());
                 view.setFieldsuggester(suggestion.getName());
                 view.setFieldsuggestion(suggestion.getSuggestion());
+
+                if (suggestion.getCountryflagPhotUrl() == null) {
+                    view.euflagImageView.setImageDrawable(ContextCompat.getDrawable(VoteSuggestionActivity.this,
+                            R.drawable.ic_person_white));
+                } /*else {
+
+                    Glide.with(VoteSuggestionActivity.this)
+                            .load(suggestion.getCountryflagPhotUrl())
+                            .into(view.euflagImageView);
+                }*/
             }
         };
 
@@ -253,5 +289,56 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
         mSuggestionsVotes.setAdapter(mRecyclerViewAdapter);
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.sign_out_menu:
+
+                startActivity(new Intent(this, VoteActivity.class));
+                return true;
+
+            case R.id.sign_in_goolge_credientials_menu:
+                startActivity(new Intent(this, GoogleSignInActivity.class));
+                return true;
+
+            case R.id.sign_in_custom_menu:
+                startActivity(new Intent(this, CustomAuthActivity.class));
+                return true;
+
+            case R.id.sign_in_emailpassword_menu:
+                startActivity(new Intent(this, EmailPasswordActivity.class));
+                return true;
+
+            case R.id.sign_in_anomyous_menu:
+                startActivity(new Intent(this, AnonymousAuthActivity.class));
+                return true;
+
+            case R.id.eu_referendumvote_menu:
+                startActivity(new Intent(this, VoteActivity.class));
+                return true;
+
+
+            case R.id.eu_referendum_stats_menu:
+                startActivity(new Intent(this, PiePolylineChartVoteActivity.class));
+                return true;
+
+            case R.id.eu_vote_suggestion_menu:
+                startActivity(new Intent(this, VoteSuggestionActivity.class));
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

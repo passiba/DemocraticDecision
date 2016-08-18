@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.crackeu.democraticdecision.R;
 
 import java.util.ArrayList;
@@ -13,6 +17,13 @@ import java.util.ArrayList;
  * Created on 11.7.2016.
  */
 public class BaseVoteActivity extends AppCompatActivity {
+
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser mFirebaseUser;
+
+    private GoogleApiClient mGoogleApiClient;
+
 
     private static final String TAG = "BaseVoteActivity";
 

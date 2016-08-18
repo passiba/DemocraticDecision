@@ -4,22 +4,35 @@
 
     <string name="label_google_sign_in"> Google Sign In</string>
     <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate.</string>
-
+    <string name="menu_google_sign_in">Google Sign In</string>
 
     <string name="label_emailpassword">Email/Password Authentication</string>
     <string name="desc_emailpassword">Use an email and password to authenticate .</string>
+    <string name="menu_emailpassword_sign_in">Email/Password Authentication</string>
+
 
     <string name="label_anonymous_auth">Anonymous Authentication</string>
     <string name="desc_anonymous_auth">Sign in anonymously and then later upgrade to a full Auth user..</string>
+    <string name="menu_anonymous_sign_in">Anonymous Authentication</string>
+
 
     <string name="label_custom_auth">Custom Authentication</string>
     <string name="desc_custom_auth">Use a custom token signed by your own server to authenticate .</string>
+    <string name="menu_custom_sign_in">Custom Authentication</string>
+
+
     <string name="desc_cast_your_vote">Use your democratic right to make you voice heard, Cast your vote in eu referendum in your counrty</string>
+    <string name="menu_vote">Give EU referendum vote</string>
+
     <string name="desc_suggestion_vote">Give suggestions which issues should be voted</string>
+    <string name="menu_vote_suggestion">Give vote suggestion</string>
 
 
     <string name="desc_vote_char">Demonstrates the graphical chart of the data</string>
+    <string name="menu_vote_stats">See vote stats</string>
 
+
+    <string name="menu_sign_out">Sign Out</string>
 
     <string name="hint_user_id">User ID</string>
     <string name="get_custom_token">Get Token</string>
