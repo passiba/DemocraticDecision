@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -99,7 +101,27 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
         });
 
         mSendButton = (Button) findViewById(R.id.button_send_eu_referendum_button);
+        mSendButton.setEnabled(false);
         mSuggestionVoteEdit = (EditText) findViewById(R.id.editTextSuggestion);
+
+        mSuggestionVoteEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.toString().trim().length() > 0) {
+                    mSendButton.setEnabled(true);
+                } else {
+                    mSendButton.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
 
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -301,6 +323,13 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+
+            case R.id.vote_explore_menu:
+
+                startActivity(new Intent(this, VoteActivity.class));
+                return true;
+
 
             case R.id.sign_out_menu:
 
