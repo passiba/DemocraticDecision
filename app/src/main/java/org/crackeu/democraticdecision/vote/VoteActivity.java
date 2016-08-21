@@ -37,6 +37,8 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -117,9 +119,9 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
 
 
         mRef = FirebaseDatabase.getInstance().getReference();
-        mVoteRef = mRef;
-        mVoteRef.child("votes");
+        mVoteRef = mRef.child("votes");
         mVoteRef.limitToLast(100);
+
         mVoteRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -573,6 +575,28 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+
+            case R.id.vote_explore_menu:
+                mAuth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        Toast.makeText(VoteActivity.this, "Signed In " + authResult.getUser(),
+                                Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "Sign in anonymously success:" + authResult.getUser());
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Sign in anonymously failed :" + e);
+                        Toast.makeText(VoteActivity.this, "Sign In Failed " + e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+                startActivity(new Intent(this, VoteActivity.class));
+                return true;
+
 
             case R.id.sign_out_menu:
                 try {
