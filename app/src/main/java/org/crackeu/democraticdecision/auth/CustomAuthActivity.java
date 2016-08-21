@@ -28,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -187,6 +189,28 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+
+            case R.id.vote_explore_menu:
+                mAuth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        Toast.makeText(CustomAuthActivity.this, "Signed In " + authResult.getUser(),
+                                Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "Sign in anonymously success:" + authResult.getUser());
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Sign in anonymously failed :" + e);
+                        Toast.makeText(CustomAuthActivity.this, "Sign In Failed " + e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+                startActivity(new Intent(this, VoteActivity.class));
+                return true;
+
 
             case R.id.sign_out_menu:
 

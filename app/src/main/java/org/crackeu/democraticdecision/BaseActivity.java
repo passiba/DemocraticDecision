@@ -51,6 +51,13 @@ public class BaseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
+
+            case R.id.vote_explore_menu:
+
+                startActivity(new Intent(this, VoteActivity.class));
+                return true;
+
+
             case R.id.sign_out_menu:
 
                 startActivity(new Intent(this, VoteActivity.class));
