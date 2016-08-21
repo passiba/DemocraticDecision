@@ -160,6 +160,7 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
                 leaveEu = true;
+                mSendButton.setEnabled(true);
             }
         });
         mVoteNoRadioButton = (RadioButton) findViewById(R.id.noradioButton);
@@ -167,6 +168,7 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
                 leaveEu = false;
+                mSendButton.setEnabled(true);
             }
         });
 
