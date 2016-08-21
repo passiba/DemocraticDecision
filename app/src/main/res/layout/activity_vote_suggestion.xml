@@ -57,7 +57,8 @@
         android:text="@string/button_vote_suggestion"
         android:layout_width="@dimen/field_width_standard"
         android:id="@+id/button_send_eu_referendum_button"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:enabled="false" />
 
 
     <android.support.v7.widget.RecyclerView
