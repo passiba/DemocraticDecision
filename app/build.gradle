@@ -22,6 +22,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+
+        // Build variant to include the Facebook Android SDk
+        // The Facebook Android SDK has a min SDK version of 15
+        facebook {
+            minSdkVersion 15
+        }
+
+        // Build variant to exclude the Facebook Android SDK
+        // Firebase Authentication has a min SDK version of 9
+        nofacebook {
+            minSdkVersion 9
+        }
+
+    }
 }
 
 dependencies {
@@ -30,14 +45,22 @@ dependencies {
     // Firebase Authentication
 
     // Google Sign In SDK (only required for Google Sign In)
-
+    compile 'com.google.android.gms:play-services-auth:9.2.0'
+    // compile 'com.google.android.gms:play-services-auth:9.4.0'
+    // Facebook Android SDK (only required for Facebook Login)
+    // This is only compiled into the 'facebook' variant of this app. You can build
+    // a 'nofacebook' variant to test on devices with SDK < 15.
+    facebookCompile 'com.facebook.android:facebook-android-sdk:4.9.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.9.0'
     //firebase Firebaseui depencencies
 
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.google.firebase:firebase-auth:9.2.0'
-    compile 'com.google.android.gms:play-services-auth:9.2.0'
+    //compile 'com.google.firebase:firebase-auth:9.4.0'
+
     compile 'com.android.support:recyclerview-v7:24.0.0'
     compile 'com.google.firebase:firebase-database:9.2.0'
+    //compile 'com.google.firebase:firebase-database:9.4.0'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
     compile 'com.android.support:support-v4:24.0.0'
     //image libraries

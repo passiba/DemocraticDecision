@@ -221,6 +221,11 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
                 startActivity(new Intent(this, GoogleSignInActivity.class));
                 return true;
 
+            case R.id.sign_in_facebook_credientials_menu:
+                startActivity(new Intent(this, FacebookLoginActivity.class));
+                return true;
+
+
             case R.id.sign_in_custom_menu:
                 startActivity(new Intent(this, CustomAuthActivity.class));
                 return true;

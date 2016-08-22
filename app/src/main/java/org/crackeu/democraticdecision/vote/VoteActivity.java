@@ -53,6 +53,7 @@ import org.crackeu.democraticdecision.R;
 import org.crackeu.democraticdecision.auth.AnonymousAuthActivity;
 import org.crackeu.democraticdecision.auth.CustomAuthActivity;
 import org.crackeu.democraticdecision.auth.EmailPasswordActivity;
+import org.crackeu.democraticdecision.auth.FacebookLoginActivity;
 import org.crackeu.democraticdecision.auth.GoogleSignInActivity;
 import org.crackeu.democraticdecision.chart.PiePolylineChartVoteActivity;
 
@@ -616,6 +617,11 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
             case R.id.sign_in_goolge_credientials_menu:
                 startActivity(new Intent(this, GoogleSignInActivity.class));
                 return true;
+
+            case R.id.sign_in_facebook_credientials_menu:
+                startActivity(new Intent(this, FacebookLoginActivity.class));
+                return true;
+
 
             case R.id.sign_in_custom_menu:
                 startActivity(new Intent(this, CustomAuthActivity.class));
