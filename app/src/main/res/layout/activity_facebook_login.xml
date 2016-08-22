@@ -53,7 +53,7 @@
             android:id="@+id/button_facebook_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/button_continuetoVote"
+            android:layout_above="@+id/button_facebook_signout"
             android:layout_centerHorizontal="true" />
 
         <Button
@@ -71,11 +71,11 @@
             android:layout_height="wrap_content"
             android:text="@string/continue_to_vote"
             android:theme="@style/ThemeOverlay.MyDarkButton"
-            android:layout_centerVertical="true"
-            android:layout_alignRight="@+id/button_facebook_login"
-            android:layout_alignEnd="@+id/button_facebook_login"
+            android:layout_alignParentBottom="true"
             android:layout_alignLeft="@+id/button_facebook_login"
             android:layout_alignStart="@+id/button_facebook_login"
+            android:layout_alignRight="@+id/button_facebook_login"
+            android:layout_alignEnd="@+id/button_facebook_login"
             android:visibility="gone" />
 
     </RelativeLayout>
