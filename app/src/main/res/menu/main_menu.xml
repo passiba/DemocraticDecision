@@ -16,6 +16,11 @@
         android:title="@string/menu_google_sign_in" />
 
     <item
+        android:id="@+id/sign_in_facebook_credientials_menu"
+        android:title="@string/menu_facebook_sign_in" />
+
+
+    <item
         android:id="@+id/sign_in_emailpassword_menu"
         android:title="@string/menu_emailpassword_sign_in" />
 
