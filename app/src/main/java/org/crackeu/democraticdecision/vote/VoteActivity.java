@@ -34,7 +34,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -59,7 +58,7 @@ import org.crackeu.democraticdecision.chart.PiePolylineChartVoteActivity;
 
 import java.util.ArrayList;
 
-public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener, OnChartValueSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener, OnChartValueSelectedListener {
 
     private static final String TAG = "VoteActivity";
 
@@ -113,10 +112,6 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
 
         mFirebaseUser = mAuth.getCurrentUser();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API)
-                .build();
 
 
         mRef = FirebaseDatabase.getInstance().getReference();
@@ -161,7 +156,7 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
                 leaveEu = true;
-                mSendButton.setEnabled(true);
+                mSendButton.setEnabled(isSignedIn());
             }
         });
         mVoteNoRadioButton = (RadioButton) findViewById(R.id.noradioButton);
@@ -169,27 +164,34 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
                 leaveEu = false;
-                mSendButton.setEnabled(true);
+                mSendButton.setEnabled(isSignedIn());
             }
         });
 
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uid = "pekkatestaaaja";
-                String name = "User " + uid.substring(0, 6);
-                Vote vote = new Vote(name, uid, leaveEu, selectedEuCountry);
-                setSingleEUCountrydata(1, 100, selectedEuCountry, vote);
-                mVoteRef.push().setValue(vote, new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference reference) {
-                        if (databaseError != null) {
-                            Log.e(TAG, "Failed to write message", databaseError.toException());
-                        }
-                    }
-                });
 
+
+                if (isSignedIn()) {
+
+
+                    String uid = mFirebaseUser.getUid();
+                    String name = mFirebaseUser.getDisplayName();
+                    Vote vote = new Vote(name, uid, leaveEu, selectedEuCountry);
+                    setSingleEUCountrydata(1, 100, selectedEuCountry, vote);
+                    mVoteRef.push().setValue(vote, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference reference) {
+                            if (databaseError != null) {
+                                Log.e(TAG, "Failed to write message", databaseError.toException());
+                            }
+                        }
+                    });
+
+                }
             }
+
         });
 
 
@@ -252,13 +254,11 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
 
     private SpannableString generateCenterSpannableText() {
 
-        SpannableString s = new SpannableString("MPAndroidChart\ndeveloped by Philipp Jahoda");
-        s.setSpan(new RelativeSizeSpan(1.5f), 0, 14, 0);
-        s.setSpan(new StyleSpan(Typeface.NORMAL), 14, s.length() - 15, 0);
-        s.setSpan(new ForegroundColorSpan(Color.GRAY), 14, s.length() - 15, 0);
-        s.setSpan(new RelativeSizeSpan(.65f), 14, s.length() - 15, 0);
-        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 14, s.length(), 0);
-        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 14, s.length(), 0);
+        SpannableString s = new SpannableString("Results");
+        s.setSpan(new RelativeSizeSpan(1.5f), 0, s.length(), 0);
+        s.setSpan(new StyleSpan(Typeface.NORMAL), 0, s.length(), 0);
+
+        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), 0, s.length(), 0);
         return s;
     }
 
@@ -444,11 +444,11 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
         // Default Database rules do not allow unauthenticated reads, so we need to
         // sign in before attaching the RecyclerView adapter otherwise the Adapter will
         // not be able to read any data from the Database.
-        //if (!isSignedIn()) {
-        signInAnonymously();
-        // } else {
+        if (!isSignedIn()) {
+
+        } else {
         //attachRecyclerViewAdapter();
-        //}
+        }
     }
 
     public boolean isSignedIn() {
@@ -457,7 +457,14 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
 
     public void updateUI() {
         // Sending only allowed when signed in
-        //mSendButton.setEnabled(isSignedIn());
+        mSendButton.setEnabled(isSignedIn());
+        if (isSignedIn()) {
+            Toast.makeText(VoteActivity.this, "Signed In",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(VoteActivity.this, "Signed out",
+                    Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -654,9 +661,5 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
         }
     }
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
-    }
 
 }
