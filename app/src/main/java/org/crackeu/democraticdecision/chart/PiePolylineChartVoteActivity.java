@@ -35,6 +35,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.crackeu.democraticdecision.R;
 import org.crackeu.democraticdecision.auth.AnonymousAuthActivity;
+import org.crackeu.democraticdecision.auth.ChooserActivity;
 import org.crackeu.democraticdecision.auth.CustomAuthActivity;
 import org.crackeu.democraticdecision.auth.EmailPasswordActivity;
 import org.crackeu.democraticdecision.auth.FacebookLoginActivity;
@@ -259,13 +260,16 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements On
                 startActivity(new Intent(this, VoteActivity.class));
                 return true;
 
+            case R.id.choose_sign_in_menu:
+                startActivity(new Intent(this, ChooserActivity.class));
+                return true;
 
             case R.id.sign_out_menu:
 
                 startActivity(new Intent(this, VoteActivity.class));
                 return true;
 
-            case R.id.sign_in_goolge_credientials_menu:
+           /* case R.id.sign_in_goolge_credientials_menu:
                 startActivity(new Intent(this, GoogleSignInActivity.class));
                 return true;
 
@@ -297,7 +301,7 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements On
 
             case R.id.eu_vote_suggestion_menu:
                 startActivity(new Intent(this, VoteSuggestionActivity.class));
-                return true;
+                return true;*/
 
 
             default:
