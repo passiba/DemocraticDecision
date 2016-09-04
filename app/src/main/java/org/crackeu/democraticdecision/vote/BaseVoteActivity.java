@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.crackeu.democraticdecision.R;
+import org.crackeu.democraticdecision.vote.model.VoteStats;
 
 import java.util.ArrayList;
 
@@ -19,29 +20,15 @@ import java.util.ArrayList;
 public class BaseVoteActivity extends AppCompatActivity {
 
 
-    private FirebaseAuth mAuth;
-    private FirebaseUser mFirebaseUser;
-
-    private GoogleApiClient mGoogleApiClient;
-
-
+    protected static final String INDEX_COUNTRY = "eucountry", INDEX_LEAVE = "isLeave";
     private static final String TAG = "BaseVoteActivity";
-
-    protected static ArrayList<String> euCountries = new ArrayList<>();
-
-
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-
+    protected static ArrayList<String> euCountries = new ArrayList<>();
+    protected static ArrayList<VoteStats> euCountriesstats = new ArrayList();
     protected String[] mMonths = new String[]{
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
     };
-
     protected String[] mParties = new String[]{
             "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
             "Party I", "Party J", "Party K", "Party L", "Party M", "Party N", "Party O", "Party P",
@@ -54,12 +41,17 @@ public class BaseVoteActivity extends AppCompatActivity {
             "Lithuania", "Luxembourg", "Malta", "Neatherlands", "Poland", "Portugal", "Romania", "Slovakia",
             "Slovenia", "Spain", "Sweden"
     };
-
     protected Typeface mTfRegular;
     protected Typeface mTfLight;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mFirebaseUser;
+    private GoogleApiClient mGoogleApiClient;
 
+    private String mParam1;
+    private String mParam2;
 
     protected static void initializeEUCountries() {
+
         BaseVoteActivity.euCountries.add("Austria");
         BaseVoteActivity.euCountries.add("Belgium");
         BaseVoteActivity.euCountries.add("Bulgaria");
@@ -88,6 +80,40 @@ public class BaseVoteActivity extends AppCompatActivity {
         BaseVoteActivity.euCountries.add("Spain");
         BaseVoteActivity.euCountries.add("Sweden");
 
+        for (String eucounrty : euCountries) {
+            VoteStats votestats = new VoteStats(eucounrty);
+            euCountriesstats.add(votestats);
+        }
+
+    }
+
+    /**
+     * Take care of popping the fragment back stack or finishing the activity
+     * as appropriate.
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in_activity, R.anim.move_right_out_activity);
+    }
+
+    /**
+     * Perform initialization of all fragments and loaders.
+     *
+     * @param savedInstanceState
+     */
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mTfRegular = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
+
+
+    }
+
+    protected float getRandom(float range, float startsfrom) {
+        return (float) (Math.random() * range) + startsfrom;
     }
 
     public static class Vote {
@@ -122,35 +148,6 @@ public class BaseVoteActivity extends AppCompatActivity {
         public String getEucountry() {
             return eucountry;
         }
-    }
-
-    /**
-     * Take care of popping the fragment back stack or finishing the activity
-     * as appropriate.
-     */
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.move_left_in_activity, R.anim.move_right_out_activity);
-    }
-
-    /**
-     * Perform initialization of all fragments and loaders.
-     *
-     * @param savedInstanceState
-     */
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mTfRegular = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-        mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
-
-
-    }
-
-    protected float getRandom(float range, float startsfrom) {
-        return (float) (Math.random() * range) + startsfrom;
     }
 
 
