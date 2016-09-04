@@ -7,14 +7,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import org.crackeu.democraticdecision.auth.AnonymousAuthActivity;
-import org.crackeu.democraticdecision.auth.CustomAuthActivity;
-import org.crackeu.democraticdecision.auth.EmailPasswordActivity;
-import org.crackeu.democraticdecision.auth.FacebookLoginActivity;
-import org.crackeu.democraticdecision.auth.GoogleSignInActivity;
+import org.crackeu.democraticdecision.auth.ChooserActivity;
 import org.crackeu.democraticdecision.chart.PiePolylineChartVoteActivity;
 import org.crackeu.democraticdecision.vote.VoteActivity;
 import org.crackeu.democraticdecision.vote.VoteSuggestionActivity;
+
 public class BaseActivity extends AppCompatActivity {
 
     private ProgressDialog mProgressDialog;
@@ -59,12 +56,16 @@ public class BaseActivity extends AppCompatActivity {
                 return true;
 
 
+            case R.id.choose_sign_in_menu:
+                startActivity(new Intent(this, ChooserActivity.class));
+                return true;
+
             case R.id.sign_out_menu:
 
                 startActivity(new Intent(this, VoteActivity.class));
                 return true;
 
-            case R.id.sign_in_goolge_credientials_menu:
+            /*case R.id.sign_in_goolge_credientials_menu:
                 startActivity(new Intent(this, GoogleSignInActivity.class));
                 return true;
 
@@ -83,7 +84,7 @@ public class BaseActivity extends AppCompatActivity {
 
             case R.id.sign_in_anomyous_menu:
                 startActivity(new Intent(this, AnonymousAuthActivity.class));
-                return true;
+                return true;*/
 
             case R.id.eu_referendumvote_menu:
                 startActivity(new Intent(this, VoteActivity.class));

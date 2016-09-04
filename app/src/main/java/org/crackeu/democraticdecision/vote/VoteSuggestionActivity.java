@@ -26,11 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.crackeu.democraticdecision.R;
-import org.crackeu.democraticdecision.auth.AnonymousAuthActivity;
-import org.crackeu.democraticdecision.auth.CustomAuthActivity;
-import org.crackeu.democraticdecision.auth.EmailPasswordActivity;
-import org.crackeu.democraticdecision.auth.FacebookLoginActivity;
-import org.crackeu.democraticdecision.auth.GoogleSignInActivity;
+import org.crackeu.democraticdecision.auth.ChooserActivity;
 import org.crackeu.democraticdecision.chart.PiePolylineChartVoteActivity;
 import org.crackeu.democraticdecision.data.FirebaseRecyclerAdapter;
 
@@ -39,15 +35,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "VoteSuggestionActivity";
-
+    String selectedEuCountry;
     private DatabaseReference mRef;
-
-
     private DatabaseReference mSuggestionRef;
     private RecyclerView mSuggestionsVotes;
     private LinearLayoutManager mManager;
     private FirebaseRecyclerAdapter<VoteSuggestion, VoteSuggestionHolder> mRecyclerViewAdapter;
-    String selectedEuCountry;
     private Button mSendButton;
     private EditText mSuggestionVoteEdit;
     private String mflagPhotoUrl = "https://www.facebook.com/kollikayttaja.jpg";
@@ -195,88 +188,6 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
 
     }
 
-    public static class VoteSuggestion {
-
-        String name;
-        String suggestion;
-        String uid;
-        String eucountry;
-        String countryflagPhotUrl;
-
-
-        public VoteSuggestion() {
-        }
-
-        public VoteSuggestion(String name, String uid, String suggestion, String country, String flagPhotUrl) {
-            this.name = name;
-            this.suggestion = suggestion;
-            this.uid = uid;
-            this.eucountry = country;
-            this.countryflagPhotUrl = flagPhotUrl;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getUid() {
-            return uid;
-        }
-
-        public String getSuggestion() {
-            return suggestion;
-        }
-
-        public String getEucountry() {
-            return eucountry;
-        }
-
-        public String getCountryflagPhotUrl() {
-            return countryflagPhotUrl;
-        }
-    }
-
-    public static class VoteSuggestionHolder extends RecyclerView.ViewHolder {
-
-
-        View mView;
-        TextView fieldsuggestion;
-        TextView fieldsuggester;
-
-        TextView fieldcountry;
-        public CircleImageView euflagImageView;
-
-
-        public VoteSuggestionHolder(View itemView) {
-            super(itemView);
-            mView = itemView;
-            fieldsuggestion = (TextView) itemView.findViewById(R.id.suggestion_text);
-            fieldsuggester = (TextView) itemView.findViewById(R.id.suggester_text);
-            fieldcountry = (TextView) itemView.findViewById(R.id.country_text);
-            euflagImageView = (CircleImageView) itemView.findViewById(R.id.flagImageView);
-        }
-
-        public void setFieldsuggestion(String suggestion) {
-            TextView fieldsuggestion = (TextView) itemView.findViewById(R.id.suggestion_text);
-            fieldsuggestion.setText(suggestion);
-        }
-
-        public void setFieldsuggester(String fieldsuggester) {
-            TextView suggester = (TextView) itemView.findViewById(R.id.suggester_text);
-            suggester.setText(fieldsuggester);
-        }
-
-        public void setFieldcountry(String counrtry) {
-            TextView fieldcounrtry = (TextView) itemView.findViewById(R.id.country_text);
-
-            fieldcounrtry.setText(counrtry);
-        }
-
-        public void setEuflagImageView(CircleImageView euflagImageView) {
-            this.euflagImageView = euflagImageView;
-        }
-    }
-
     private void attachRecyclerViewAdapter() {
         //Query lastFifty = mVotes.limitToLast(50);
         mRecyclerViewAdapter = new FirebaseRecyclerAdapter<VoteSuggestion, VoteSuggestionHolder>(
@@ -331,13 +242,17 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
                 startActivity(new Intent(this, VoteActivity.class));
                 return true;
 
+            case R.id.choose_sign_in_menu:
+                startActivity(new Intent(this, ChooserActivity.class));
+                return true;
+
 
             case R.id.sign_out_menu:
 
                 startActivity(new Intent(this, VoteActivity.class));
                 return true;
 
-            case R.id.sign_in_goolge_credientials_menu:
+           /* case R.id.sign_in_goolge_credientials_menu:
                 startActivity(new Intent(this, GoogleSignInActivity.class));
                 return true;
 
@@ -356,7 +271,7 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
 
             case R.id.sign_in_anomyous_menu:
                 startActivity(new Intent(this, AnonymousAuthActivity.class));
-                return true;
+                return true;*/
 
             case R.id.eu_referendumvote_menu:
                 startActivity(new Intent(this, VoteActivity.class));
@@ -374,6 +289,87 @@ public class VoteSuggestionActivity extends BaseVoteActivity implements AdapterV
 
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static class VoteSuggestion {
+
+        String name;
+        String suggestion;
+        String uid;
+        String eucountry;
+        String countryflagPhotUrl;
+
+
+        public VoteSuggestion() {
+        }
+
+        public VoteSuggestion(String name, String uid, String suggestion, String country, String flagPhotUrl) {
+            this.name = name;
+            this.suggestion = suggestion;
+            this.uid = uid;
+            this.eucountry = country;
+            this.countryflagPhotUrl = flagPhotUrl;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getUid() {
+            return uid;
+        }
+
+        public String getSuggestion() {
+            return suggestion;
+        }
+
+        public String getEucountry() {
+            return eucountry;
+        }
+
+        public String getCountryflagPhotUrl() {
+            return countryflagPhotUrl;
+        }
+    }
+
+    public static class VoteSuggestionHolder extends RecyclerView.ViewHolder {
+
+
+        public CircleImageView euflagImageView;
+        View mView;
+        TextView fieldsuggestion;
+        TextView fieldsuggester;
+        TextView fieldcountry;
+
+
+        public VoteSuggestionHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+            fieldsuggestion = (TextView) itemView.findViewById(R.id.suggestion_text);
+            fieldsuggester = (TextView) itemView.findViewById(R.id.suggester_text);
+            fieldcountry = (TextView) itemView.findViewById(R.id.country_text);
+            euflagImageView = (CircleImageView) itemView.findViewById(R.id.flagImageView);
+        }
+
+        public void setFieldsuggestion(String suggestion) {
+            TextView fieldsuggestion = (TextView) itemView.findViewById(R.id.suggestion_text);
+            fieldsuggestion.setText(suggestion);
+        }
+
+        public void setFieldsuggester(String fieldsuggester) {
+            TextView suggester = (TextView) itemView.findViewById(R.id.suggester_text);
+            suggester.setText(fieldsuggester);
+        }
+
+        public void setFieldcountry(String counrtry) {
+            TextView fieldcounrtry = (TextView) itemView.findViewById(R.id.country_text);
+
+            fieldcounrtry.setText(counrtry);
+        }
+
+        public void setEuflagImageView(CircleImageView euflagImageView) {
+            this.euflagImageView = euflagImageView;
         }
     }
 }
