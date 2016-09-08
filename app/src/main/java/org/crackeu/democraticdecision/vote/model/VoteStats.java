@@ -12,6 +12,8 @@ public class VoteStats {
     String uid = "statistics";
     String eucontryKey;
     String eucountry;
+    String countryflagPhotUrl;
+
 
 
     public VoteStats() {
@@ -63,6 +65,10 @@ public class VoteStats {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getCountryflagPhotUrl() {
+        return countryflagPhotUrl;
     }
 
     // [START post_to_map]@Exclude

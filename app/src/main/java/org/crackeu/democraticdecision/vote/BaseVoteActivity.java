@@ -13,6 +13,8 @@ import org.crackeu.democraticdecision.R;
 import org.crackeu.democraticdecision.vote.model.VoteStats;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created on 11.7.2016.
@@ -25,7 +27,7 @@ public class BaseVoteActivity extends AppCompatActivity {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     protected static ArrayList<String> euCountries = new ArrayList<>();
-    protected static ArrayList<VoteStats> euCountriesstats = new ArrayList();
+    //protected static ArrayList<VoteStats> euCountriesstats = new ArrayList();
     protected String[] mMonths = new String[]{
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
     };
@@ -46,9 +48,8 @@ public class BaseVoteActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
     private GoogleApiClient mGoogleApiClient;
-
-    private String mParam1;
-    private String mParam2;
+    protected static ArrayList<VoteStats> euCountrieStat=new ArrayList<>();
+    public Map<String, VoteStats> euCountryKeys = new HashMap<>();
 
     protected static void initializeEUCountries() {
 
@@ -82,7 +83,7 @@ public class BaseVoteActivity extends AppCompatActivity {
 
         for (String eucounrty : euCountries) {
             VoteStats votestats = new VoteStats(eucounrty);
-            euCountriesstats.add(votestats);
+            euCountrieStat.add(votestats);
         }
 
     }

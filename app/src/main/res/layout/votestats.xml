@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/votestatistics_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
+
+
+    <LinearLayout
+        android:id="@+id/votestatistics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="26dp"
+        android:background="@drawable/vote_message_background"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:weightSum="1">
+
+        <FrameLayout
+            android:id="@+id/left_arrow"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="2dp"
+            android:background="@drawable/vote_message_arrow"
+            android:rotation="180" >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:id="@+id/flagImageView"
+                android:src="@drawable/ic_person_white"
+                android:layout_gravity="center_horizontal|bottom" />
+        </FrameLayout>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart1"
+            android:layout_width="match_parent"
+            android:layout_height="108dp"
+            android:layout_below="@+id/voteStatsList"
+            android:layout_gravity="right"
+            android:layout_weight="2.33" />
+
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:id="@+id/votestat_text"
+            android:layout_width="746dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            tools:text="Voting results" />
+
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            android:id="@+id/country_text"
+            android:layout_width="732dp"
+            android:layout_height="wrap_content"
+            tools:text="Some Eu Country" />
+
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            android:id="@+id/voteCountTotal_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="0"/>
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            android:id="@+id/voteCountYes_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="0"/>
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            android:id="@+id/voteCountNo_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="0"/>
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/right_arrow"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignEnd="@+id/votestatistics"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/votestatistics"
+        android:layout_marginRight="-25dp"
+        android:background="@drawable/vote_message_arrow"
+        android:rotation="180" />
+
+
+</RelativeLayout>

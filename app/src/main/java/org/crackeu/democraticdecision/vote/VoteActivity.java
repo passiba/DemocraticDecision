@@ -55,13 +55,14 @@ import org.crackeu.democraticdecision.vote.model.VoteStats;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
 public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener, OnChartValueSelectedListener {
 
     private static final String TAG = "VoteActivity";
     protected DatabaseReference mRef;
-    protected DatabaseReference mVoteRef;
+    protected DatabaseReference mVoteRef,mVoteStatsReference;
     protected Query queryCountryTotalVotes, queryCountryYesvotes, queryContryNovotes;
     protected RadioButton mVoteYesRadioButton;
     protected RadioButton mVoteNoRadioButton;
@@ -78,21 +79,7 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
 
     private Typeface tf;
 
-    private static synchronized void initializeVoteStatJsonDb() {
-        DatabaseReference mVoteStatsReference = FirebaseDatabase.getInstance().getReference();
-        mVoteStatsReference = mVoteStatsReference.child("stats");
 
-        for (VoteStats stats : euCountriesstats) {
-            stats.setEucontryKey(mVoteStatsReference.child(stats.getEucountry()).push().getKey());
-            Map<String, Object> postValues = stats.toMap();
-            Map<String, Object> childUpdates = new HashMap<>();
-            childUpdates.put("/stats/" + stats.getEucontryKey(), postValues);
-            childUpdates.put("/country-stats/" + stats.getUid() + "/" + stats.getEucontryKey(), postValues);
-            // childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
-            mVoteStatsReference.updateChildren(childUpdates);
-        }
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +87,7 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_vote);
 
         super.initializeEUCountries();
-        initializeVoteStatJsonDb();
+
         // Set up ListView and Adapter
         ListView listView = (ListView) findViewById(R.id.listEuCountries);
         ArrayAdapter<String> adaptercountries = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, euCountries);
@@ -122,7 +109,9 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
 
         mRef = FirebaseDatabase.getInstance().getReference();
         mVoteRef = mRef.child("votes");
-
+        mVoteStatsReference = mRef.child("stats");
+        mVoteStatsReference.addChildEventListener(childEventListener);
+        initializeVoteStatDb();
         //queryContryNovotes=queryCountryTotalVotes.orderByChild(INDEX_LEAVE).equalTo("false");
 
 
@@ -507,67 +496,6 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
     }
 
 
-    /*private void attachRecyclerViewAdapter() {
-        //Query lastFifty = mVotes.limitToLast(50);
-        mRecyclerViewAdapter = new FirebaseRecyclerAdapter<VoteStats, VoteHolder>(
-                VoteStats.class, R.layout.vote, VoteHolder.class, mVoteRef) {
-
-            @Override
-            public void populateViewHolder(VoteHolder voteView, VoteStats vote, int position) {
-                if (vote.isLeaveEu)
-                    voteView.setFieldvote("yes");
-                else {
-                    voteView.setFieldvote("no");
-                }
-                voteView.setFieldvotercounrtry(vote.getEucountry());
-                voteView.setFieldvotername(vote.getName());
-            }
-        };
-
-        // Scroll to bottom on new messages
-        mRecyclerViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                mManager.smoothScrollToPosition(mVotes, null, mRecyclerViewAdapter.getItemCount());
-            }
-        });
-
-        mVotes.setAdapter(mRecyclerViewAdapter);
-
-
-    }
-
-    public static class VoteHolder extends RecyclerView.ViewHolder {
-        View mView;
-        TextView fieldvote;
-        TextView fieldvotername;
-
-        TextView fieldvotercounrtry;
-
-        public VoteHolder(View itemView) {
-            super(itemView);
-            mView = itemView;
-            fieldvote = (TextView) itemView.findViewById(R.id.vote_text);
-            fieldvotername = (TextView) itemView.findViewById(R.id.vote_username_text);
-            fieldvotercounrtry = (TextView) itemView.findViewById(R.id.vote_usercountry_text);
-        }
-
-        public void setFieldvote(String fieldvote) {
-            TextView vote = (TextView) mView.findViewById(R.id.vote_text);
-            vote.setText(fieldvote);
-        }
-
-        public void setFieldvotername(String fieldvotername) {
-            TextView votername = (TextView) mView.findViewById(R.id.vote_username_text);
-            votername.setText(fieldvotername);
-        }
-
-        public void setFieldvotercounrtry(String fieldvotercounrtry) {
-            TextView country = (TextView) mView.findViewById(R.id.vote_usercountry_text);
-            country.setText(fieldvotercounrtry);
-        }
-    }*/
-
     /**
      * Called when nothing has been selected or an "un-select" has been made.
      */
@@ -667,158 +595,98 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
                 return super.onOptionsItemSelected(item);
         }
     }
+    private void writetoJsonDb(VoteStats stats)
+    {
+       /* DatabaseReference mVoteStatsReference = FirebaseDatabase.getInstance().getReference();
+            mVoteStatsReference = mVoteStatsReference.child("stats")
+       Map<String, Object> postValues = stats.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/stats/" + stats.getEucontryKey(), postValues);
+        childUpdates.put("/country-stats/" + stats.getUid() + "/" + stats.getEucontryKey(), postValues);
+        // childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+        mVoteStatsReference.updateChildren(childUpdates);*/
+        stats.setEucontryKey(mVoteStatsReference.child(stats.getEucountry()).push().getKey());
 
+       /* mVoteStatsReference.push().setValue(stats, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference reference) {
+                if (databaseError != null) {
+                    Log.e(TAG, "Failed to write vote statistics message", databaseError.toException());
+                }
+            }
+        });*/
+    }
+    private void initializeVoteStatDb()
+    {
+        for(VoteStats stats:euCountrieStat)
+        {
+            String key = mVoteStatsReference.push().getKey();
+            stats.setEucontryKey(key);
+            //set key to colletion
+            Map<String, Object> postValues = stats.toMap();
+            Map<String, Object> childUpdates = new HashMap<>();
+            childUpdates.put(key, postValues);
+            mVoteStatsReference.updateChildren(childUpdates);
+        }
+    }
+    private VoteStats addVoteStatistics( Vote vote) {
+        VoteStats stats=new VoteStats(vote.getEucountry());
+        stats.isLeavingEuCount(vote.isLeaveEu());
+        String key = mVoteStatsReference.push().getKey();
+        stats.setEucontryKey(key);
+        //set key to colletion
+        euCountryKeys.put(vote.getEucountry(),stats);
+        Map<String, Object> postValues = stats.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(key, postValues);
+        mVoteStatsReference.updateChildren(childUpdates);
+        return stats;
+    }
+    public void updateVoteStatistics(VoteStats model) {
+
+        mVoteStatsReference.child(model.getEucontryKey()).setValue(model);
+    }
     private void writeNewVoteStats(final Vote vote) {
 
 
         // Create new vote statistics at /stats/$userid/$postid and at
         // /posts/$postid simultaneously
-
-
         if (vote != null) {
 
-            DatabaseReference mVoteStatsReference = FirebaseDatabase.getInstance().getReference();
-            mVoteStatsReference = mVoteStatsReference.child("stats").child(vote.getEucountry());
-
             int index = euCountries.indexOf(vote.getEucountry());
-            VoteStats stats = euCountriesstats.get(index);
-
-            stats.isLeavingEuCount(vote.isLeaveEu());
-
-            Map<String, Object> postValues = stats.toMap();
-            Map<String, Object> childUpdates = new HashMap<>();
-            childUpdates.put("/stats/" + stats.getEucontryKey(), postValues);
-            childUpdates.put("/country-stats/" + stats.getUid() + "/" + stats.getEucontryKey(), postValues);
-            // childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
-            mVoteStatsReference.updateChildren(childUpdates);
-            // DatabaseReference mEucounrty=mVoteStatsReference.child(vote.getEucountry());
-
-           /* mVoteStatsReference.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                    org.crackeu.democraticdecision.vote.model.VoteStats vo = dataSnapshot.getValue( org.crackeu.democraticdecision.vote.model.VoteStats.class);
-
-
-                    Log.d(TAG, "vote stats added" + vo.getUid() + " " + vo.getEucontryKey()+ " " +vo.getEucountry() );
-                    setSingleEUCountrydata(vo);
-
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    org.crackeu.democraticdecision.vote.model.VoteStats vo = dataSnapshot.getValue( org.crackeu.democraticdecision.vote.model.VoteStats.class);
-                    Log.d(TAG, "vote stats added" + vo.getUid() + " " + vo.getEucontryKey()+ " " +vo.getEucountry() );
-                    setSingleEUCountrydata(vo);
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });*/
-
-            // String uid = mFirebaseUser.getUid();
-            //  String name = mFirebaseUser.getDisplayName();
-
-
-            // Map<String, Object> postValues = v.toMap();
-            // Map<String, Object> childUpdates = new HashMap<>();
-            // childUpdates.put("/stats/" + country_key, postValues);
-            // childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
-            // mVoteStatsReference.updateChildren(childUpdates);
-           /* mVoteStatsReference.runTransaction(new Transaction.Handler() {
-                @Override
-                public Transaction.Result doTransaction(MutableData mutableData) {
-                    org.crackeu.democraticdecision.vote.model.VoteStats p = mutableData.getValue(org.crackeu.democraticdecision.vote.model.VoteStats.class);
-                    if (p == null) {
-                        return Transaction.success(mutableData);
-                    }
-
-                    if (p.votes.containsKey(p.getEucontryKey())) {
-                        // Unstar the post and remove self from stars
-                        p.voteCount = p.voteCount + 1;
-                        if(vote.isLeaveEu) {
-                            p.yesVoteCount = p.yesVoteCount + 1;
-                        }else {
-                            p.noVoteCount = p.noVoteCount + 1;
-                        }
-
-
-                    } else {
-                        // Star the post and add self to stars
-                        //p.voteCount = p.voteCount + 1;
-                        //p.votes.put(country_key, 1);
-                    }
-
-                    // Set value and report transaction success
-                    mutableData.setValue(p);
-                    return Transaction.success(mutableData);
-                }
-
-                @Override
-                public void onComplete(DatabaseError databaseError, boolean b,
-                                       DataSnapshot dataSnapshot) {
-                    // Transaction completed
-                    Log.d(TAG, "postTransaction:onComplete:" + databaseError);
-                }
-            });*/
-
-           /* mVoteStatsReference.runTransaction(new Transaction.Handler() {
-                @Override
-                public Transaction.Result doTransaction(MutableData mutableData) {
-                    org.crackeu.democraticdecision.vote.model.VoteStats p = mutableData.getValue(org.crackeu.democraticdecision.vote.model.VoteStats.class);
-                    if (p == null) {
-                        return Transaction.success(mutableData);
-                    }
-
-                    if (p.votes.containsKey(p.getEucontryKey())) {
-                        // Unstar the post and remove self from stars
-                        p.voteCount = p.voteCount + 1;
-                        if(vote.isLeaveEu()) {
-                            p.yesVoteCount = p.yesVoteCount + 1;
-                        }else {
-                            p.noVoteCount = p.noVoteCount + 1;
-                        }
-
-
-                    } else {
-
-                        p.voteCount = p.voteCount + 1;
-                        if(vote.isLeaveEu()) {
-                            p.yesVoteCount = p.yesVoteCount + 1;
-                        }else {
-                            p.noVoteCount = p.noVoteCount + 1;
-                        }
-                        // Star the post and add self to stars
-
-                        p.votes.put(p.getEucontryKey(), p.getEucountry());
-                    }
-                    // Set value and report transaction success
-                     mutableData.setValue(p);
-                    setSingleEUCountrydata(p);
-                    return Transaction.success(mutableData);
-                }
-
-                @Override
-                public void onComplete(DatabaseError databaseError, boolean b,
-                                       DataSnapshot dataSnapshot) {
-                    // Transaction completed
-                    Log.d(TAG, "postTransaction:onComplete:" + databaseError);
-                }
-            });*/
-            setSingleEUCountrydata(stats);
+            if(index!=-1)
+            {
+                VoteStats stats=euCountrieStat.get(index);
+                stats.isLeavingEuCount(vote.isLeaveEu);
+                updateVoteStatistics(stats);
+                setSingleEUCountrydata(stats);
+            }
         }
     }
+
+
+    ChildEventListener childEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            Log.d(TAG, "stats onChildAdded" +dataSnapshot.getKey() + ":" + dataSnapshot.getValue().toString());
+        }
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            Log.d(TAG, "stats onChildChanged" +dataSnapshot.getKey() + ":" + dataSnapshot.getValue().toString());
+        }
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            Log.d(TAG, "stats onChildRemoved" +dataSnapshot.getKey() + ":" + dataSnapshot.getValue().toString());
+        }
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Toast.makeText(getApplicationContext()," stats Could not update.",Toast.LENGTH_SHORT).show();
+
+        }
+    };
 }
