@@ -1,17 +1,22 @@
 <resources>
     <string name="app_name">DemocraticDecision</string>
+    <string name="menu_choose_sign_in">Choose Sign in Authentication Method</string>
 
     <string name="menu_voteexplore">Explore votes</string>
     <string name="facebook_status_fmt">Facebook User: %s</string>
     <string name="facebook_title_text">Facebook Login</string>
     <string name="facebook_app_id">1763916337201384</string>
-    <string name="menu_facebook_sign_in">Facebook Sign In</string>
+    <string name="menu_facebook_sign_in">Facebook Sign In/Sign out</string>
     <string name="label_facebook_sign_in"> Use a Facebook Sign In Facebook Sign In</string>
+    <string name="des_facebook_sign_in"> Use a Facebook Sign In Facebook Sign In</string>
     <string name="continue_to_vote">Continue to Voting</string>
 
     <string name="label_google_sign_in"> Google Sign In</string>
     <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate.</string>
+    <string name="desc_google_smart_password_sign_in">Use a Google Smart Password Sign In to authenticate and save your credential.</string>
+    <string name="label_google_smart_password_sign_in">Google Smart Password Sign In </string>
     <string name="menu_google_sign_in">Google Sign In</string>
+    <string name="sign_in_email_cta">Sign In with Email</string>
 
     <string name="label_emailpassword">Email/Password Authentication</string>
     <string name="desc_emailpassword">Use an email and password to authenticate .</string>
@@ -40,7 +45,7 @@
 
 
     <string name="menu_sign_out">Sign Out</string>
-
+    <string name="revoke_access">Revoke </string>
     <string name="hint_user_id">User ID</string>
     <string name="get_custom_token">Get Token</string>
     <string name="sign_in">Sign In</string>
@@ -75,6 +80,10 @@
     <string name="button_vote_suggestion">Send Suggestion</string>
     <string name="eu_country">Your EU country</string>
 
+    <string name="select_arragned_stats_by">Select vote statistics listing criteria</string>
+    <string name="select_arragned_stats_by_voteTotalcount">Total count</string>
+    <string name="select_arragned_stats_by_voteYescount">Yes vote counts </string>
+    <string name="select_arragned_stats_by_voteNocount">No vote counts</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_facebook_login">Sign in</string>

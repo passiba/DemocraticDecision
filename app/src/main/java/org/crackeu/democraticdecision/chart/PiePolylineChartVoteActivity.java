@@ -1,7 +1,6 @@
 package org.crackeu.democraticdecision.chart;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,14 +13,9 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -42,23 +36,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import org.crackeu.democraticdecision.R;
-import org.crackeu.democraticdecision.auth.AnonymousAuthActivity;
-import org.crackeu.democraticdecision.auth.ChooserActivity;
-import org.crackeu.democraticdecision.auth.CustomAuthActivity;
-import org.crackeu.democraticdecision.auth.EmailPasswordActivity;
-import org.crackeu.democraticdecision.auth.FacebookLoginActivity;
-import org.crackeu.democraticdecision.auth.GoogleSignInActivity;
 import org.crackeu.democraticdecision.data.FirebaseRecyclerAdapter;
 import org.crackeu.democraticdecision.vote.BaseVoteActivity;
 
-
-import org.crackeu.democraticdecision.vote.VoteActivity;
-import org.crackeu.democraticdecision.vote.VoteSuggestionActivity;
-import org.crackeu.democraticdecision.vote.model.VoteStats;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -75,7 +56,12 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements
     protected DatabaseReference mRef;
     protected DatabaseReference mVoteStatsReference;
 
-    private FirebaseRecyclerAdapter<VoteStats, VoteStatsHolder> mRecyclerViewAdapter;
+
+    private String selectionQuery = "voteCount";
+    private FirebaseRecyclerAdapter<Stats, StatsHolder> mRecyclerViewAdapter;
+
+    /* private FragmentPagerAdapter mPagerAdapter;
+    private ViewPager mViewPager;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,15 +69,16 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_pie_polyline_chart_vote);
 
+
         mRef = FirebaseDatabase.getInstance().getReference();
         mVoteStatsReference = mRef.child("stats");
         mVoteStatsReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                VoteStats stats = dataSnapshot.getValue(VoteStats.class);
+               /* VoteStats stats = dataSnapshot.getValue(VoteStats.class);
 
-                Log.d(TAG,"stats added " +stats.getEucountry()  + " "+stats.getEucountry());
+                Log.d(TAG,"stats added " +stats.getEucountry()  + " "+stats.getEucountry());*/
 
             }
 
@@ -115,6 +102,35 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements
 
             }
         });
+
+       /* // Create the adapter that will return a fragment for each section
+        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            private final Fragment[] mFragments = new Fragment[] {
+                    new CountryYesVoteFragment(),
+                    new CountryNoVotesFragment()
+            };
+            private final String[] mFragmentNames = new String[] {
+                    getString(R.string.select_arragned_stats_by_voteYescount),
+                    getString(R.string.select_arragned_stats_by_voteNocount)
+            };
+            @Override
+            public Fragment getItem(int position) {
+                return mFragments[position];
+            }
+            @Override
+            public int getCount() {
+                return mFragments.length;
+            }
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mFragmentNames[position];
+            }
+        };
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mPagerAdapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);*/
 
        /* mChart = (PieChart) findViewById(R.id.chart1);
         mChart.setUsePercentValues(true);
@@ -169,7 +185,7 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements
 
         mVoteStats.setHasFixedSize(false);
         mVoteStats.setLayoutManager(mManager);
-        //mManager.addView(mChart);
+
 
     }
     @Override
@@ -316,7 +332,7 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements
 
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
@@ -333,7 +349,12 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements
                 startActivity(new Intent(this, VoteActivity.class));
                 return true;
 
-            case R.id.choose_sign_in_menu:
+
+            case R.id.sign_in_facebook_credientials_menu:
+                startActivity(new Intent(this, FacebookLoginActivity.class));
+                return true;
+
+            /*case R.id.choose_sign_in_menu:
                 startActivity(new Intent(this, ChooserActivity.class));
                 return true;
 
@@ -342,13 +363,11 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements
                 startActivity(new Intent(this, VoteActivity.class));
                 return true;
 
-           /* case R.id.sign_in_goolge_credientials_menu:
+            case R.id.sign_in_goolge_credientials_menu:
                 startActivity(new Intent(this, GoogleSignInActivity.class));
                 return true;
 
-            case R.id.sign_in_facebook_credientials_menu:
-                startActivity(new Intent(this, FacebookLoginActivity.class));
-                return true;
+
 
 
             case R.id.sign_in_custom_menu:
@@ -377,22 +396,22 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements
                 return true;*/
 
 
-            default:
+         /*   default:
                 return super.onOptionsItemSelected(item);
         }
-    }
+    }*/
 
-    public Query getQuery() {
+    private Query getQuery(String query) {
         // All Statistics wiht votecount greater than zero
         return mVoteStatsReference.orderByChild("voteCount").startAt(1);
     }
     private void attachRecyclerViewAdapter() {
         //Query lastFifty = mVotes.limitToLast(50);
-        mRecyclerViewAdapter = new FirebaseRecyclerAdapter<VoteStats, VoteStatsHolder>(
-                VoteStats.class, R.layout.votestats, VoteStatsHolder.class, getQuery()) {
+        mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Stats, StatsHolder>(
+                Stats.class, R.layout.votestats, StatsHolder.class, getQuery(selectionQuery)) {
 
             @Override
-            public void populateViewHolder(VoteStatsHolder view, VoteStats stats, int position) {
+            public void populateViewHolder(StatsHolder view, Stats stats, int position) {
 
 
                 view.setCountry_text(stats.getEucountry());
@@ -425,7 +444,8 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements
 
 
     }
-    public static class VoteStatsHolder  extends RecyclerView.ViewHolder implements
+
+    public static class StatsHolder extends RecyclerView.ViewHolder implements
             OnChartValueSelectedListener{
         View mView;
         public CircleImageView euflagImageView;
@@ -443,7 +463,7 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements
 
         TextView country_text,voteCountTotal_text,voteCountYes_text,voteCountNo_text;
 
-        public VoteStatsHolder(View itemView) {
+        public StatsHolder(View itemView) {
             super(itemView);
             mView = itemView;
             country_text = (TextView) itemView.findViewById(R.id.country_text);
@@ -531,7 +551,8 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements
             s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), 0, s.length(), 0);
             return s;
         }
-        private void setSingleEUCountrydata(VoteStats votestas) {
+
+        private void setSingleEUCountrydata(Stats votestas) {
 
 
             ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
@@ -711,6 +732,19 @@ public class PiePolylineChartVoteActivity extends BaseVoteActivity implements
         public void onNothingSelected() {
             Log.i("PieChart", "nothing selected");
 
+        }
+
+        public void bindToPost(Stats stat, View.OnClickListener starClickListener) {
+
+            country_text.setText(stat.getEucountry());
+            voteCountTotal_text.setText(String.valueOf(stat.getVoteCount()));
+
+            voteCountYes_text.setText(String.valueOf(stat.getYesVoteCount()));
+
+            voteCountNo_text.setText(String.valueOf(stat.getNoVoteCount()));
+            euflagImageView = (CircleImageView) itemView.findViewById(R.id.flagImageView);
+
+            //euflagImageView .setOnClickListener(starClickListener);
         }
 
 

@@ -43,9 +43,9 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     // Firebase Authentication
-
     // Google Sign In SDK (only required for Google Sign In)
     compile 'com.google.android.gms:play-services-auth:9.2.0'
+    //compile "com.google.android.gms:play-services-auth:8.3.0"
     // compile 'com.google.android.gms:play-services-auth:9.4.0'
     // Facebook Android SDK (only required for Facebook Login)
     // This is only compiled into the 'facebook' variant of this app. You can build
@@ -53,11 +53,9 @@ dependencies {
     facebookCompile 'com.facebook.android:facebook-android-sdk:4.9.0'
     compile 'com.facebook.android:facebook-android-sdk:4.9.0'
     //firebase Firebaseui depencencies
-
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.google.firebase:firebase-auth:9.2.0'
     //compile 'com.google.firebase:firebase-auth:9.4.0'
-
     compile 'com.android.support:recyclerview-v7:24.0.0'
     compile 'com.google.firebase:firebase-database:9.2.0'
     //compile 'com.google.firebase:firebase-database:9.4.0'

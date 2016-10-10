@@ -13,20 +13,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.crackeu.democraticdecision.R;
-import org.crackeu.democraticdecision.chart.PiePolylineChartVoteActivity;
-import org.crackeu.democraticdecision.vote.VoteActivity;
-import org.crackeu.democraticdecision.vote.VoteSuggestionActivity;
 
 
 /**
  * Simple list-based Activity to redirect to one of the other Activities. This Activity does not
- * contain any useful code related to Firebase Authentication. You may want to start with
+ * contain any useful code related toAuthentication. You may want to start with
  * one of the following Files:
  * {@link GoogleSignInActivity}
  * {@link EmailPasswordActivity}
- * {@link AnonymousAuthActivity}
- * {@link CustomAuthActivity}
- * {@link VoteActivity}
+ * {@link SmartPasswordLoginActivity}
+ * {@link FacebookLoginActivity}
  **/
 
 public class ChooserActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -35,23 +31,15 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
     private static final Class[] CLASSES = new Class[]{
             GoogleSignInActivity.class,
             EmailPasswordActivity.class,
-            AnonymousAuthActivity.class,
-            CustomAuthActivity.class,
-            VoteActivity.class,
-            VoteSuggestionActivity.class,
-            PiePolylineChartVoteActivity.class
+            SmartPasswordLoginActivity.class,
+            FacebookLoginActivity.class
     };
 
     private static final int[] DESCRIPTION_IDS = new int[]{
             R.string.desc_google_sign_in,
             R.string.desc_emailpassword,
-            R.string.desc_anonymous_auth,
-            R.string.desc_custom_auth,
-            R.string.desc_cast_your_vote,
-            R.string.desc_suggestion_vote,
-            R.string.desc_vote_char
-
-
+            R.string.desc_google_smart_password_sign_in,
+            R.string.des_facebook_sign_in
     };
 
     @Override

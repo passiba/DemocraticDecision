@@ -28,8 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +37,7 @@ import org.crackeu.democraticdecision.R;
 import org.crackeu.democraticdecision.chart.PiePolylineChartVoteActivity;
 import org.crackeu.democraticdecision.vote.VoteActivity;
 import org.crackeu.democraticdecision.vote.VoteSuggestionActivity;
+
 /**
  * Demonstrate Firebase Authentication using a custom minted token. For more information, see:
  * https://firebase.google.com/docs/auth/android/custom-auth
@@ -191,7 +190,7 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
         switch (item.getItemId()) {
 
 
-            case R.id.vote_explore_menu:
+             /*case R.id.vote_explore_menu:
                 mAuth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
@@ -217,12 +216,12 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
                 startActivity(new Intent(this, VoteActivity.class));
                 return true;
 
-            case R.id.sign_in_goolge_credientials_menu:
-                startActivity(new Intent(this, GoogleSignInActivity.class));
+            case R.id.choose_sign_in_menu:
+                startActivity(new Intent(this, ChooserActivity.class));
                 return true;
 
-            case R.id.sign_in_facebook_credientials_menu:
-                startActivity(new Intent(this, FacebookLoginActivity.class));
+           case R.id.sign_in_goolge_credientials_menu:
+                startActivity(new Intent(this, GoogleSignInActivity.class));
                 return true;
 
 
@@ -237,6 +236,13 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
             case R.id.sign_in_anomyous_menu:
                 startActivity(new Intent(this, AnonymousAuthActivity.class));
                 return true;
+*/
+
+            case R.id.sign_in_facebook_credientials_menu:
+                startActivity(new Intent(this, FacebookLoginActivity.class));
+                return true;
+
+
 
             case R.id.eu_referendumvote_menu:
                 startActivity(new Intent(this, VoteActivity.class));

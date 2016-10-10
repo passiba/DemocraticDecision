@@ -1,25 +1,23 @@
 package org.crackeu.democraticdecision.vote;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -33,11 +31,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -45,17 +39,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
 import org.crackeu.democraticdecision.R;
-import org.crackeu.democraticdecision.auth.ChooserActivity;
-import org.crackeu.democraticdecision.auth.GoogleSignInActivity;
-import org.crackeu.democraticdecision.chart.PiePolylineChartVoteActivity;
-import org.crackeu.democraticdecision.vote.model.VoteStats;
+import org.crackeu.democraticdecision.data.FirebaseRecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 
 public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener, OnChartValueSelectedListener {
@@ -63,7 +52,6 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
     private static final String TAG = "VoteActivity";
     protected DatabaseReference mRef;
     protected DatabaseReference mVoteRef,mVoteStatsReference;
-    protected Query queryCountryTotalVotes, queryCountryYesvotes, queryContryNovotes;
     protected RadioButton mVoteYesRadioButton;
     protected RadioButton mVoteNoRadioButton;
     String selectedEuCountry;
@@ -72,10 +60,10 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
     private GoogleApiClient mGoogleApiClient;
     private Button mSendButton;
     private boolean leaveEu;
-    //private RecyclerView mVotes;
+    private RecyclerView mVotes;
     private LinearLayoutManager mManager;
     private PieChart mChart;
-    // private FirebaseRecyclerAdapter<VoteStats, VoteHolder> mRecyclerViewAdapter;
+    private FirebaseRecyclerAdapter<Vote, VoteHolder> mRecyclerViewAdapter;
 
     private Typeface tf;
 
@@ -111,7 +99,7 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
         mVoteRef = mRef.child("votes");
         mVoteStatsReference = mRef.child("stats");
         mVoteStatsReference.addChildEventListener(childEventListener);
-        initializeVoteStatDb();
+        // initializeVoteStatDb();
         //queryContryNovotes=queryCountryTotalVotes.orderByChild(INDEX_LEAVE).equalTo("false");
 
 
@@ -122,7 +110,7 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
 
                 long count = dataSnapshot.getChildrenCount();
                 Vote vote = dataSnapshot.getValue(Vote.class);
-                writeNewVoteStats(vote);
+
                 Log.d(TAG, "vote added" + vote.eucountry + " " + vote.getName() + " " + vote.isLeaveEu());
             }
 
@@ -158,7 +146,7 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
             public void onClick(View v) {
                 leaveEu = true;
                 mSendButton.setEnabled(true);
-                // mSendButton.setEnabled(isSignedIn());
+                mSendButton.setEnabled(isSignedIn());
             }
         });
         mVoteNoRadioButton = (RadioButton) findViewById(R.id.noradioButton);
@@ -167,7 +155,7 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
             public void onClick(View v) {
                 leaveEu = false;
                 mSendButton.setEnabled(true);
-                //   mSendButton.setEnabled(isSignedIn());
+                mSendButton.setEnabled(isSignedIn());
             }
         });
 
@@ -176,37 +164,39 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
             public void onClick(View v) {
 
 
-                //if (isSignedIn()) {
+                if (isSignedIn()) {
 
 
-                //String uid = mFirebaseUser.getUid();
-                // String name = mFirebaseUser.getDisplayName();
+                    // String uid = mFirebaseUser.getUid();
+                    //  String name = mFirebaseUser.getDisplayName();
                 String uid = "pekkalitestaaja", name = "pekka testaaja";
                 Vote vote = new Vote(name, uid, leaveEu, selectedEuCountry);
 
-                mVoteRef.push().setValue(vote, new DatabaseReference.CompletionListener() {
+                    mVoteRef.push().setValue(vote, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference reference) {
+
+
                         if (databaseError != null) {
                             Log.e(TAG, "Failed to write message", databaseError.toException());
                         }
                     }
                 });
-
-                //}
+                    writeNewVoteStats(vote);
+                }
             }
 
         });
 
 
-        // mVotes = (RecyclerView) findViewById(R.id.voteList);
+      /*   mVotes = (RecyclerView) findViewById(R.id.voteList);
 
         mManager = new LinearLayoutManager(this);
         mManager.setReverseLayout(false);
 
-        //mVotes.setHasFixedSize(false);
-        // mVotes.setLayoutManager(mManager);
-
+        mVotes.setHasFixedSize(false);
+        mVotes.setLayoutManager(mManager);
+        */
 
         mChart = (PieChart) findViewById(R.id.chart1);
         mChart.setUsePercentValues(true);
@@ -266,7 +256,7 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
         return s;
     }
 
-    private void setSingleEUCountrydata(VoteStats votestas) {
+    private void setSingleEUCountrydata(Stats votestas) {
 
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
@@ -439,9 +429,9 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
     @Override
     protected void onStop() {
         super.onStop();
-        /*if (mRecyclerViewAdapter != null) {
+        if (mRecyclerViewAdapter != null) {
             mRecyclerViewAdapter.cleanup();
-        }*/
+        }
     }
 
     /**
@@ -454,11 +444,11 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
         // Default Database rules do not allow unauthenticated reads, so we need to
         // sign in before attaching the RecyclerView adapter otherwise the Adapter will
         // not be able to read any data from the Database.
-        if (!isSignedIn()) {
+        // if (!isSignedIn()) {
 
-        } else {
+        // } else {
             //attachRecyclerViewAdapter();
-        }
+        // }
     }
 
     public boolean isSignedIn() {
@@ -505,97 +495,8 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-
-            case R.id.vote_explore_menu:
-                mAuth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        Toast.makeText(VoteActivity.this, "Signed In " + authResult.getUser(),
-                                Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "Sign in anonymously success:" + authResult.getUser());
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Sign in anonymously failed :" + e);
-                        Toast.makeText(VoteActivity.this, "Sign In Failed " + e.getMessage(),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-                startActivity(new Intent(this, VoteActivity.class));
-                return true;
-
-            case R.id.choose_sign_in_menu:
-                startActivity(new Intent(this, ChooserActivity.class));
-                return true;
-
-            case R.id.sign_out_menu:
-                try {
-                    mAuth.signOut();
-                    Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                    //throws IllegalStateexpeption as you are not yet sign in
-                } catch (java.lang.IllegalStateException stateex) {
-                    Log.d(TAG, "Sign out Failed:" + stateex);
-                }
-
-                mFirebaseUser = null;
-                startActivity(new Intent(this, GoogleSignInActivity.class));
-                return true;
-
-
-
-            /*case R.id.sign_in_goolge_credientials_menu:
-                startActivity(new Intent(this, GoogleSignInActivity.class));
-                return true;
-
-            case R.id.sign_in_facebook_credientials_menu:
-                startActivity(new Intent(this, FacebookLoginActivity.class));
-                return true;
-
-
-            case R.id.sign_in_custom_menu:
-                startActivity(new Intent(this, CustomAuthActivity.class));
-                return true;
-
-            case R.id.sign_in_emailpassword_menu:
-                startActivity(new Intent(this, EmailPasswordActivity.class));
-                return true;
-
-            case R.id.sign_in_anomyous_menu:
-                startActivity(new Intent(this, AnonymousAuthActivity.class));
-                return true;*/
-
-            case R.id.eu_referendumvote_menu:
-                startActivity(new Intent(this, VoteActivity.class));
-                return true;
-
-
-            case R.id.eu_referendum_stats_menu:
-                startActivity(new Intent(this, PiePolylineChartVoteActivity.class));
-                return true;
-
-            case R.id.eu_vote_suggestion_menu:
-                startActivity(new Intent(this, VoteSuggestionActivity.class));
-                return true;
-
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    private void writetoJsonDb(VoteStats stats)
+    private void writetoJsonDb(Stats stats)
     {
        /* DatabaseReference mVoteStatsReference = FirebaseDatabase.getInstance().getReference();
             mVoteStatsReference = mVoteStatsReference.child("stats")
@@ -616,21 +517,34 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
             }
         });*/
     }
-    private void initializeVoteStatDb()
-    {
-        for(VoteStats stats:euCountrieStat)
-        {
-            String key = mVoteStatsReference.push().getKey();
-            stats.setEucontryKey(key);
-            //set key to colletion
-            Map<String, Object> postValues = stats.toMap();
-            Map<String, Object> childUpdates = new HashMap<>();
-            childUpdates.put(key, postValues);
-            mVoteStatsReference.updateChildren(childUpdates);
-        }
+
+    /* private void initializeVoteStatDb()
+     {
+         for(Stats stats:euCountrieStat)
+         {
+             String key = mVoteStatsReference.push().getKey();
+             stats.setEucontryKey(key);
+             //set key to colletion
+             Map<String, Object> postValues = stats.toMap();
+             Map<String, Object> childUpdates = new HashMap<>();
+             childUpdates.put(key, postValues);
+             mVoteStatsReference.updateChildren(childUpdates);
+         }
+     }*/
+    private void addStatistics(Stats model) {
+        String key = mVoteStatsReference.push().getKey();
+        model.setEucontryKey(key);
+        //set key to colletion
+        euCountryKeys.put(model.getEucountry(), model);
+        Map<String, Object> postValues = model.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(key, postValues);
+        mVoteStatsReference.updateChildren(childUpdates);
+
     }
-    private VoteStats addVoteStatistics( Vote vote) {
-        VoteStats stats=new VoteStats(vote.getEucountry());
+
+    private Stats addVoteStatistics(Vote vote) {
+        Stats stats = new Stats(vote.getEucountry());
         stats.isLeavingEuCount(vote.isLeaveEu());
         String key = mVoteStatsReference.push().getKey();
         stats.setEucontryKey(key);
@@ -643,23 +557,67 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
         mVoteStatsReference.updateChildren(childUpdates);
         return stats;
     }
-    public void updateVoteStatistics(VoteStats model) {
+
+    public void updateVoteStatistics(Stats model) {
 
         mVoteStatsReference.child(model.getEucontryKey()).setValue(model);
     }
-    private void writeNewVoteStats(final Vote vote) {
+
+    private void writeNewVoteStats(Vote vote) {
 
 
         // Create new vote statistics at /stats/$userid/$postid and at
         // /posts/$postid simultaneously
         if (vote != null) {
 
+
             int index = euCountries.indexOf(vote.getEucountry());
             if(index!=-1)
             {
-                VoteStats stats=euCountrieStat.get(index);
+                Stats stats = new Stats(vote.getEucountry());
+                if (!euCountryKeys.isEmpty() && euCountryKeys.containsKey(vote.getEucountry())) {
+                    stats = euCountryKeys.get(vote.getEucountry());
+                }
+
+
+                //calculate statistics
+
+               /* stats.setVoteCount(stats.getVoteCount()+1);
+               if(vote.isLeaveEu())
+                {
+                    stats.setYesVoteCount(stats.getYesVoteCount()+1);
+                }else
+                {
+                    stats.setNoVoteCount(stats.getNoVoteCount()+1);
+                }*/
                 stats.isLeavingEuCount(vote.isLeaveEu);
-                updateVoteStatistics(stats);
+                if (euCountryKeys != null && !euCountryKeys.isEmpty() && euCountryKeys.containsKey(vote.getEucountry())) {
+                    updateVoteStatistics(stats);
+
+                   /* mVoteStatsReference.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData mutableData) {
+                            Stats st=mutableData.getValue(Stats.class);
+                            st.setVoteCount(st.getVoteCount()+1);
+                            if(vote.isLeaveEu())
+                            {
+                                st.setYesVoteCount(st.getYesVoteCount()+1);
+                            }else
+                            {
+                                st.setNoVoteCount(st.getNoVoteCount()+1);
+                            }
+                            mutableData.setValue(st);
+                            return Transaction.success(mutableData);
+                        }
+
+                        @Override
+                        public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                            Log.d(TAG, "postTransaction:onComplete:" + databaseError);
+                        }
+                    });*/
+                } else {
+                    addStatistics(stats);
+                }
                 setSingleEUCountrydata(stats);
             }
         }
@@ -689,4 +647,67 @@ public class VoteActivity extends BaseVoteActivity implements AdapterView.OnItem
 
         }
     };
+
+
+    private void attachRecyclerViewAdapter() {
+        //Query lastFifty = mVotes.limitToLast(50);
+        mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Vote, VoteHolder>(
+                Vote.class, R.layout.vote, VoteHolder.class, mVoteRef) {
+
+            @Override
+            public void populateViewHolder(VoteHolder voteView, Vote vote, int position) {
+                if (vote.isLeaveEu)
+                    voteView.setFieldvote("yes");
+                else {
+                    voteView.setFieldvote("no");
+                }
+                voteView.setFieldvotercounrtry(vote.getEucountry());
+                voteView.setFieldvotername(vote.getName());
+            }
+        };
+
+
+        // Scroll to bottom on new messages
+        mRecyclerViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                mManager.smoothScrollToPosition(mVotes, null, mRecyclerViewAdapter.getItemCount());
+            }
+        });
+
+        mVotes.setAdapter(mRecyclerViewAdapter);
+
+
+    }
+
+    public static class VoteHolder extends RecyclerView.ViewHolder {
+        View mView;
+        TextView fieldvote;
+        TextView fieldvotername;
+
+        TextView fieldvotercounrtry;
+
+        public VoteHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+            fieldvote = (TextView) itemView.findViewById(R.id.vote_text);
+            fieldvotername = (TextView) itemView.findViewById(R.id.vote_username_text);
+            fieldvotercounrtry = (TextView) itemView.findViewById(R.id.vote_usercountry_text);
+        }
+
+        public void setFieldvote(String fieldvote) {
+            TextView vote = (TextView) mView.findViewById(R.id.vote_text);
+            vote.setText(fieldvote);
+        }
+
+        public void setFieldvotername(String fieldvotername) {
+            TextView votername = (TextView) mView.findViewById(R.id.vote_username_text);
+            votername.setText(fieldvotername);
+        }
+
+        public void setFieldvotercounrtry(String fieldvotercounrtry) {
+            TextView country = (TextView) mView.findViewById(R.id.vote_usercountry_text);
+            country.setText(fieldvotercounrtry);
+        }
+    }
 }

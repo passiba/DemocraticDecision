@@ -1,24 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:id="@+id/header"
     tools:context="org.crackeu.democraticdecision.chart.PiePolylineChartVoteActivity">
 
+    <ImageView
+        android:id="@+id/icon"
+        android:contentDescription="@string/desc_crackeu_lockup"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/crackeu_lockup_400"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
+
+    <!--
+  <android.support.design.widget.TabLayout
+         android:id="@+id/tabs"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content" />
+
+     <android.support.v4.view.ViewPager
+         android:id="@+id/container"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_below="@id/tabs" />
+
+ -->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/voteStatsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/header"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:clipToPadding="false"
 
         tools:listitem="@layout/votestats"
@@ -27,4 +45,4 @@
         android:background="@color/highlighted_text_material_dark" />
 
 
-</RelativeLayout>
+</LinearLayout>

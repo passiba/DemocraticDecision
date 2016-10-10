@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/vote_explore_menu"
-        android:title="@string/menu_voteexplore"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/sign_out_menu"
-        android:title="@string/sign_out"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/sign_in_goolge_credientials_menu"
-        android:title="@string/menu_google_sign_in" />
 
     <item
         android:id="@+id/sign_in_facebook_credientials_menu"
         android:title="@string/menu_facebook_sign_in" />
 
 
-    <item
-        android:id="@+id/sign_in_emailpassword_menu"
-        android:title="@string/menu_emailpassword_sign_in" />
+    <!--
 
-    <item
-        android:id="@+id/sign_in_anomyous_menu"
-        android:title="@string/menu_anonymous_sign_in" />
+     <item
+        android:id="@+id/vote_explore_menu"
+        android:title="@string/menu_voteexplore"
+        app:showAsAction="never" />
 
-    <item
-        android:id="@+id/sign_in_custom_menu"
-        android:title="@string/menu_custom_sign_in" />
+        <item
+            android:id="@+id/choose_sign_in_menu"
+            android:title="@string/menu_choose_sign_in" />
+
+        <item
+           android:id="@+id/sign_out_menu"
+           android:title="@string/sign_out"
+           app:showAsAction="never" />
+      <item
+          android:id="@+id/sign_in_goolge_credientials_menu"
+          android:title="@string/menu_google_sign_in" />
+
+
+
+      <item
+          android:id="@+id/sign_in_emailpassword_menu"
+          android:title="@string/menu_emailpassword_sign_in" />
+
+     <item
+          android:id="@+id/sign_in_anomyous_menu"
+          android:title="@string/menu_anonymous_sign_in" />
+
+      <item
+          android:id="@+id/sign_in_custom_menu"
+          android:title="@string/menu_custom_sign_in" />-->
 
     <item
         android:id="@+id/eu_vote_suggestion_menu"
@@ -43,7 +51,7 @@
 
     <item
         android:id="@+id/eu_referendum_stats_menu"
-        android:title="@string/menu_vote_stats" />
+        android:title="@string/menu_vote_stats" />-->
 
     <!--<item
         android:id="@+id/invite_menu"
