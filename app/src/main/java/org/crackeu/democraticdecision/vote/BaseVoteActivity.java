@@ -75,7 +75,6 @@ public class BaseVoteActivity extends AppCompatActivity {
         BaseVoteActivity.euCountries.add("Italy");
         BaseVoteActivity.euCountries.add("Latvia");
         BaseVoteActivity.euCountries.add("Lithuania");
-        ix
         BaseVoteActivity.euCountries.add("Luxembourg");
         BaseVoteActivity.euCountries.add("Malta");
         BaseVoteActivity.euCountries.add("Neatherlands");
